@@ -1,0 +1,9 @@
+library/
+logs/
+temp/
+obj/
+.vs/
+Assets/Ressources/Store/_DLNK/_DLNK Source/_DLNK Libraries/
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
+The_Unknown.sln
