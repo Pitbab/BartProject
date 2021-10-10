@@ -6,7 +6,7 @@ using System;
 public class BasicMovement : MonoBehaviour
 {
     private CharacterController Controller;
-    private AnimationManager AnimManager;
+    private AnimationController AnimManager;
 
     [SerializeField] private GameObject AimTarget;
     [SerializeField] private float JumpYSpeed;
@@ -88,7 +88,7 @@ public class BasicMovement : MonoBehaviour
         PlayerManager.Instance.RegisterMoving(this);
 
         Controller = GetComponent<CharacterController>();
-        AnimManager = GetComponent<AnimationManager>();
+        AnimManager = GetComponent<AnimationController>();
         wallrun = GetComponent<WallRun>();
         Climb = GetComponent<Climbing>();
 
@@ -326,8 +326,6 @@ public class BasicMovement : MonoBehaviour
         IsOnGround = (Physics.CheckSphere(GroundPlace.transform.position, CheckGroundRadius, AllLayer));
         return IsOnGround;
     }
-
-
     //----------------------------------------------------------------------------// Called by traps //------------------------------------------------------------------------------------------------//
     public void GetStagger()
     {

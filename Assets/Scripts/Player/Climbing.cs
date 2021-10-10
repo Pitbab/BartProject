@@ -7,7 +7,7 @@ public class Climbing : MonoBehaviour
     private LayerMask Climable;
     private LayerMask Ledge;
     private BasicMovement moving;
-    private AnimationManager AnimManager;
+    private AnimationController AnimManager;
 
     [SerializeField] private GameObject LeftHand;
     [SerializeField] private GameObject RightHand;
@@ -24,7 +24,7 @@ public class Climbing : MonoBehaviour
         Climable = LayerMask.GetMask("Climable");
         Ledge = LayerMask.GetMask("Ledge");
         moving = GetComponent<BasicMovement>();
-        AnimManager = GetComponent<AnimationManager>();
+        AnimManager = GetComponent<AnimationController>();
 
     }
 

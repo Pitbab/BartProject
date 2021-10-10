@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6919459242493329663}
   - component: {fileID: 6929938436646399309}
   - component: {fileID: 6961344697330269201}
-  m_Layer: 15
+  m_Layer: 0
   m_Name: Box076
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6951989100700905769}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1984120987954685000}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &6919459242493329663
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -110,7 +110,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1984120987954685000}
   - component: {fileID: 8824546770897104240}
-  m_Layer: 0
+  - component: {fileID: 240545081314065688}
+  m_Layer: 15
   m_Name: RotationCorrector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,6 +145,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f040e0ae1d3e1a64d82471f46f239874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Starting: {fileID: 0}
-  Ending: {fileID: 0}
-  Mesh: {fileID: 6951989100700905769}
+  TimeToRotate: 0
+  Locations: []
+  Speed: 0
+  RotationSpeed: 0
+  MinDist: 0
+--- !u!65 &240545081314065688
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7058501037978189500}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.3307815, y: 1.6427088, z: 4.3913794}
+  m_Center: {x: -0.03623742, y: 0.3213544, z: 0.14093733}

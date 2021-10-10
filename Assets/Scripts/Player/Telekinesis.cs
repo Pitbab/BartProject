@@ -14,7 +14,6 @@ public class Telekinesis : MonoBehaviour
     private const float MaxRange = 30.0f;
     private const float Strength = 30.0f;
     private const float ObjectHoldingSpeed = 15.0f;
-    //private Camera PlayerCam;
 
     private Ray TelekinesisRange;
 
@@ -33,7 +32,7 @@ public class Telekinesis : MonoBehaviour
 
     [SerializeField] private GameObject UI;
     private PlayerUI ui;
-    private Animator PlayerAnim;
+    private AnimationController AnimController;
 
     private LayerMask Pickable;
 
@@ -42,8 +41,7 @@ public class Telekinesis : MonoBehaviour
     {
         ui = UI.GetComponent<PlayerUI>();
         InitialPos = HoldingPlace.localPosition;
-        //PlayerCam = Upper.GetComponent<Camera>();
-        PlayerAnim = GetComponent<Animator>();
+        AnimController = GetComponent<AnimationController>();
         Pickable = LayerMask.GetMask("Pickable");
     }
 
@@ -112,6 +110,7 @@ public class Telekinesis : MonoBehaviour
             {
                 ObjectInUse.isKinematic = false;
                 ObjectInUse.useGravity = true;
+                AnimController.StopHold();
             }
 
             ObjectInUse = null;
@@ -137,6 +136,7 @@ public class Telekinesis : MonoBehaviour
             if(ObjectInUse)
             {
                 ObjectInUse.isKinematic = true;
+                AnimController.PlayHold();
 
             }
         }
@@ -216,6 +216,7 @@ public class Telekinesis : MonoBehaviour
         ObjectInUse.isKinematic = false;
         ObjectInUse.useGravity = true;
         ObjectInUse = null;
+        AnimController.StopHold();
 
         HoldingPlace.localPosition = InitialPos;
     }
@@ -230,8 +231,8 @@ public class Telekinesis : MonoBehaviour
             {
                 CurrentMana -= cost;
             }
-
-            PlayerAnim.SetTrigger("Push");
+            
+            AnimController.PlayPush();
             destructible.Shatter(Upper.transform.forward * Strength);
         }
     }
@@ -256,8 +257,8 @@ public class Telekinesis : MonoBehaviour
             {
                 CurrentMana -= cost;
             }
-
-            PlayerAnim.SetTrigger("Push");
+            
+            AnimController.PlayPush();
 
         }
         else

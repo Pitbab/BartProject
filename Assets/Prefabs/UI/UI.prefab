@@ -1127,9 +1127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7baa5e5437864104291aedda9aa64113, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ManaSlider: {fileID: 3774714012818317090}
+  ManaSlider: {fileID: 2274670181932554361}
   StaminaSlider: {fileID: 4945555517713075564}
-  HealthSlider: {fileID: 2274670183378591050}
+  HealthSlider: {fileID: 3774714012818317090}
   Player: {fileID: 0}
   RedIndicatorMana: {fileID: 2274670182906639021}
   SelectedPower: {fileID: 2274670182371804458}
@@ -2152,7 +2152,7 @@ GameObject:
   - component: {fileID: 1406922132844503640}
   - component: {fileID: 4945555517713075564}
   m_Layer: 5
-  m_Name: testHealth (1)
+  m_Name: StamBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3087,7 +3087,7 @@ GameObject:
   - component: {fileID: 3987661451160903916}
   - component: {fileID: 3774714012818317090}
   m_Layer: 5
-  m_Name: testHealth
+  m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

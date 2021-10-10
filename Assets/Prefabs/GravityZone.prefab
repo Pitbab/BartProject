@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5577393118658135059}
   - component: {fileID: 7674721128933454041}
   - component: {fileID: 7424764479585725248}
+  - component: {fileID: 2406615693428768518}
   m_Layer: 0
   m_Name: GravityZone
   m_TagString: Gravity
@@ -93,3 +94,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2406615693428768518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8179357452763713804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2edd9ba64bf9fd446870347cbb879af3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -50,8 +50,13 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject, LifeTime);
         }
-    }
 
+        if (collision.gameObject.tag == "Player")
+        {
+            Debug.Log("hit");
+            PlayerManager.Instance.InstantDamage(10);
+        }
+    }
 }
 
 

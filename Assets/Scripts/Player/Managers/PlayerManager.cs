@@ -40,6 +40,8 @@ public class PlayerManager : MonoBehaviour
 
     private string FinalTime;
 
+    private List<Coroutine> delays = new List<Coroutine>();
+
     public float PlayerStam
     {
         get
@@ -218,18 +220,20 @@ public class PlayerManager : MonoBehaviour
 
     private void RegenStam()
     {
-        //not ideal but working for now
-
+        //keep delays in list to not use StopAllCoroutine
         if(!wallRun.OnWall && !basicMov.Running && !climbing.Climb())
         {
-            StartCoroutine(RegenDelay());
+            Coroutine delay = StartCoroutine(RegenDelay());
+            delays.Add(delay);
             OnStaminaChanged?.Invoke(Stamina);
         }
         else
         {
-            StopAllCoroutines();
+            foreach (var routine in delays)
+            {
+                StopCoroutine(routine);
+            }
         }
-
     }
 
     private IEnumerator RegenDelay()

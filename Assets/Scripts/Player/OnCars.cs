@@ -30,7 +30,7 @@ public class OnCars : MonoBehaviour
         RaycastHit hitInfo;
         if (Physics.Raycast(GroundCheck, out hitInfo, CheckGroundRadius, CarsLayer))
         {
-            CurrentCar = hitInfo.transform.parent.gameObject;
+            CurrentCar = hitInfo.transform.gameObject;
             this.transform.parent = CurrentCar.transform;
         }
 

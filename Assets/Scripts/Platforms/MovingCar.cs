@@ -20,15 +20,16 @@ public class MovingCar : MonoBehaviour
     private Vector3 TargetLocation = Vector3.zero;
     private Vector3 LastLocation = Vector3.zero;
     private float Rotator = 90;
+    private Transform childMesh;
     
     //private bool IsGoingLeft;
 
     private void Start()
     {
-        //StartCoroutine(Moving());
         LastLocation = transform.position;
         TargetLocation = Locations[LocationIndex].position;
         StartCoroutine(MoveToLocation());
+        childMesh = transform.GetChild(0);
     }
     
     private void SetLocation()
@@ -54,65 +55,34 @@ public class MovingCar : MonoBehaviour
         
         SetLocation();
         LastLocation = transform.position;
-        StartCoroutine(Turning());
+        
+        //doing this for now (assets offset angle messing with turning coroutine)
+        childMesh.Rotate(0,0, -90);
+        StartCoroutine(MoveToLocation());
+        //StartCoroutine(Turning());
+
     }
     
     private IEnumerator Turning()
     {
         float timer = 0;
-
-        quaternion rotation = quaternion.Euler(transform.rotation.x, transform.rotation.y - Rotator, transform.rotation.z);
         
+        Vector3 Angle = (childMesh.position - TargetLocation);
+        Quaternion lookRot = Quaternion.LookRotation(Angle);
+
         while (timer < TimeToRotate)
         {
             timer += Time.deltaTime;
             float lerpValue = timer / TimeToRotate;
 
             
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, lerpValue);
+            childMesh.rotation = Quaternion.Lerp(childMesh.rotation, lookRot, lerpValue);
 
             yield return null;
         }
 
-        Rotator += 90;
-        
         StartCoroutine(MoveToLocation());
     }
-    
-
-    /*
-     *
-     *     private IEnumerator Moving()
-    {
-        float timer = 0;
-
-        while (timer < TimeToLap)
-        {
-            timer += Time.deltaTime;
-            float lerpValue = timer / TimeToLap;
-
-            if (IsGoingLeft)
-            {
-                Mesh.transform.rotation = Quaternion.Euler(-90.0f, -90.0f, 0.0f);
-                transform.position = Vector3.Lerp(Starting.position, Ending.position, lerpValue);
-            }
-            else
-            {
-                Mesh.transform.rotation = Quaternion.Euler(-90.0f, 90.0f, 0.0f);
-                transform.position = Vector3.Lerp(Ending.position, Starting.position, lerpValue);
-            }
-
-            yield return null;
-        }
-        
-        StartCoroutine(Turing());
-
-    }
-
-
-     * 
-     */
-
 
 
 }

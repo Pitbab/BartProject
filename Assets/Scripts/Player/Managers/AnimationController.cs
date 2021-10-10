@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
-public class AnimationManager : MonoBehaviour
+public class AnimationController : MonoBehaviour
 {
     private Animator PlayerAnimator;
     private const string Slide = "Slide";
@@ -11,6 +11,9 @@ public class AnimationManager : MonoBehaviour
     private const string Climbing = "Climbing";
     private const string WallEnd = "WallEnd";
     private const string Trapped = "Trapped";
+    private const string Push = "Push";
+
+    [SerializeField] private RigBuilder.RigLayer ArmMover;
 
     private void Start()
     {
@@ -90,6 +93,26 @@ public class AnimationManager : MonoBehaviour
     public void StopTrapped()
     {
         PlayerAnimator.SetBool(Trapped, false);
+    }
+
+    public void PlayPush()
+    {
+        PlayerAnimator.SetTrigger(Push);
+    }
+
+    public void PlayHold()
+    {
+        ArmMover.rig.weight = 100;
+    }
+
+    public void StopHold()
+    {
+        ArmMover.rig.weight = 0;
+    }
+
+    private IEnumerator PutArmDown()
+    {
+        yield return null;
     }
 
 
