@@ -141,7 +141,7 @@ public class BasicMovement : MonoBehaviour
             if(!CheatManager.Instance.Flying)
             {
                 //Run faster
-                if (Input.GetKey(KeyCode.LeftShift) && IsOnGround)
+                if (Input.GetKey(KeyCode.LeftShift) && IsOnGround && PlayerManager.Instance.PlayerStam > 0)
                 {
                     if (CurrentSpeed < RunningSpeed)
                     {

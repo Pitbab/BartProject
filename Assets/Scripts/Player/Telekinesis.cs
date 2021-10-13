@@ -113,6 +113,8 @@ public class Telekinesis : MonoBehaviour
                 ObjectInUse.isKinematic = false;
                 ObjectInUse.useGravity = true;
                 AnimController.StopHold();
+                //need to put that somewhere else
+                HoldingParticles.SetActive(true);
             }
 
             ObjectInUse = null;
@@ -139,6 +141,9 @@ public class Telekinesis : MonoBehaviour
             {
                 ObjectInUse.isKinematic = true;
                 AnimController.PlayHold();
+                
+                //need to put that somewhere else 
+                HoldingParticles.SetActive(true);
 
             }
         }
@@ -219,6 +224,9 @@ public class Telekinesis : MonoBehaviour
         ObjectInUse.useGravity = true;
         ObjectInUse = null;
         AnimController.StopHold();
+        
+        //need to put that somewhere else
+        HoldingParticles.SetActive(false);
 
         HoldingPlace.localPosition = InitialPos;
     }

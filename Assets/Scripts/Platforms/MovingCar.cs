@@ -21,6 +21,7 @@ public class MovingCar : MonoBehaviour
     private Vector3 LastLocation = Vector3.zero;
     private float Rotator = 90;
     private Transform childMesh;
+    private BoxCollider Coll;
     
     //private bool IsGoingLeft;
 
@@ -30,6 +31,10 @@ public class MovingCar : MonoBehaviour
         TargetLocation = Locations[LocationIndex].position;
         StartCoroutine(MoveToLocation());
         childMesh = transform.GetChild(0);
+        Coll = GetComponent<BoxCollider>();
+        childMesh.Rotate(0,0, 90);
+        Coll.size = new Vector3(Coll.size.z, Coll.size.y, Coll.size.x);
+        
     }
     
     private void SetLocation()
@@ -58,6 +63,7 @@ public class MovingCar : MonoBehaviour
         
         //doing this for now (assets offset angle messing with turning coroutine)
         childMesh.Rotate(0,0, -90);
+        Coll.size = new Vector3(Coll.size.z, Coll.size.y, Coll.size.x);
         StartCoroutine(MoveToLocation());
         //StartCoroutine(Turning());
 
