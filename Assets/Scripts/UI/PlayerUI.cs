@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 public class PlayerUI : MonoBehaviour
 {
 
-    [SerializeField] private Slider ManaSlider;
+    [SerializeField] private Slider ManaSliderRight;
+    [SerializeField] private Slider ManaSliderLeft;
     [SerializeField] private Slider StaminaSlider;
     [SerializeField] private Slider HealthSlider;
     [SerializeField] private GameObject Player;
@@ -31,7 +32,7 @@ public class PlayerUI : MonoBehaviour
     private bool InMenu = false;
     private const float NormalTimeScale = 1.0f;
     private const float MenuTimeScale = 0.0f;
-    
+
     //if i make more than 2-3 power there will  be a wheel of selection and slow-mo to help the player select the power
     //private float SelectionTimeScale = 0.2f;
 
@@ -48,7 +49,6 @@ public class PlayerUI : MonoBehaviour
         TimerText.text = "0 : 00";
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
     }
 
     private void OnHealthChanged(float health)
@@ -60,10 +60,11 @@ public class PlayerUI : MonoBehaviour
     {
         StaminaSlider.value = stamina;
     }
-
+    
     private void Update()
     {
-        ManaSlider.value = Mana.CurrentMana;
+        ManaSliderRight.value = Mana.CurrentMana;
+        ManaSliderLeft.value = Mana.CurrentMana;
         index = Mana.ModeIndex;
         UpdatePowerImage();
 
@@ -83,6 +84,8 @@ public class PlayerUI : MonoBehaviour
             ChangeTimeScale();
             PlayerManager.Instance.ChangeMenuState();
         }
+        
+        
     }
 
     private void ChangeCursorMode()

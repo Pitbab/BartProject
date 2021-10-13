@@ -7,6 +7,11 @@ public class MenuController : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("CityTest");
+        SceneManager.LoadScene("Level_1");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

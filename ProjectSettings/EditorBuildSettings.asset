@@ -8,12 +8,18 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Gym/Gym_Parcours.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menus/MainMenu.unity
     guid: 18f64f773ec207049b2c1d01a627ddac
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AssetsTesting/CityTest.unity
     guid: 3f2a2e7c3176d3a4cb0d900d622dcfdd
+  - enabled: 1
+    path: Assets/Scenes/Menus/MainMenu 1.unity
+    guid: b384a6d81be5c3349a27a313421003bd
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_1.unity
+    guid: 5a3fad28720a31542ae15cb1b46f321b
   - enabled: 1
     path: Assets/Scenes/Gym/dead.unity
     guid: e1318f92f8a18114fa84ce774f6dc124

@@ -36,6 +36,8 @@ public class Telekinesis : MonoBehaviour
 
     private LayerMask Pickable;
 
+    [SerializeField] private GameObject HoldingParticles;
+
 
     private void Start()
     {
