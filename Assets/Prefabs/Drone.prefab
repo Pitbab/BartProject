@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5225707711272632000}
   - component: {fileID: 5357922757520818449}
+  - component: {fileID: 3188344084729230026}
   m_Layer: 0
   m_Name: Drone
   m_TagString: Untagged
@@ -49,8 +50,104 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18eece4cc764aa34e8a782c9cf9b955e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Turret: {fileID: 4927009231676698012}
-  PatrolsCheckPoints: []
+  Locations: []
+  Speed: 0
+--- !u!82 &3188344084729230026
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039253089676938083}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 7372dacc2d6f7634faa24fafaec3e7cd, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 50
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2453905327268716716
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,6 +629,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turret
       objectReference: {fileID: 0}
+    - target: {fileID: 4212693879785654234, guid: abf23d5ad1c162841ae65bd7f468b007,
+        type: 3}
+      propertyPath: MaxCooldown
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212693879785654234, guid: abf23d5ad1c162841ae65bd7f468b007,
+        type: 3}
+      propertyPath: MinCooldown
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6916765749432583194, guid: abf23d5ad1c162841ae65bd7f468b007,
         type: 3}
       propertyPath: m_RootOrder
@@ -589,12 +696,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abf23d5ad1c162841ae65bd7f468b007, type: 3}
---- !u!1 &4927009231676698012 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3833690595108908769, guid: abf23d5ad1c162841ae65bd7f468b007,
-    type: 3}
-  m_PrefabInstance: {fileID: 8166224052660208509}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3362227732583057255 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6916765749432583194, guid: abf23d5ad1c162841ae65bd7f468b007,

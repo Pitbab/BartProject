@@ -8,6 +8,7 @@ public class BigGate : MonoBehaviour
     [SerializeField] private List<Lever> Levers;
     [SerializeField] private List<GameObject> Bars;
     public Action CheckLevers;
+    [SerializeField] private AudioClip PowerDownSFX;
 
     private void Start()
     {
@@ -39,6 +40,7 @@ public class BigGate : MonoBehaviour
 
     private void OpenGate()
     {
+        AudioManager.Instance.PlaySfx(PowerDownSFX, transform.position, 1f);
         foreach(GameObject bar in Bars)
         {
             bar.SetActive(false);

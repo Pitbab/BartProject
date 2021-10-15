@@ -37,6 +37,7 @@ public class Telekinesis : MonoBehaviour
     private LayerMask Pickable;
 
     [SerializeField] private GameObject HoldingParticles;
+    [SerializeField] private List<ParticleSystem> BlastParticles;
 
 
     private void Start()
@@ -154,11 +155,16 @@ public class Telekinesis : MonoBehaviour
 
         if(CurrentMana > 0)
         {
+#if DEBUG
             if (!CheatManager.Instance.NoRessources)
             {
+#endif
                 //cost of mana to hold object in the air
                 CurrentMana -= ManaUseRate * ObjectInUse.mass * Time.deltaTime;
+#if DEBUG
             }
+#endif
+
 
             //calculate the new position
             Vector3 pos = HoldingPlace.localPosition;
@@ -175,6 +181,11 @@ public class Telekinesis : MonoBehaviour
                 ObjectInUse.useGravity = false;
                 ObjectInUse = null;
                 HoldingPlace.localPosition = InitialPos;
+                
+                AnimController.StopHold();
+        
+                //need to put that somewhere else
+                HoldingParticles.SetActive(false);
             }
         }
         else
@@ -237,11 +248,19 @@ public class Telekinesis : MonoBehaviour
 
         if (CurrentMana >= cost)
         {
+#if DEBUG
             if (!CheatManager.Instance.NoRessources)
             {
+#endif
                 CurrentMana -= cost;
+#if DEBUG
             }
-            
+#endif
+
+            foreach (ParticleSystem syst in BlastParticles)
+            {
+                syst.Play();
+            }
             AnimController.PlayPush();
             destructible.Shatter(Upper.transform.forward * Strength);
         }
@@ -262,13 +281,21 @@ public class Telekinesis : MonoBehaviour
             rb.isKinematic = false;
             rb.useGravity = true;
             rb.AddForce(Upper.transform.forward * Strength, ForceMode.VelocityChange);
-
+#if DEBUG
             if (!CheatManager.Instance.NoRessources)
             {
+#endif
                 CurrentMana -= cost;
+#if DEBUG
+            }
+#endif
+            foreach (ParticleSystem syst in BlastParticles)
+            {
+                syst.Play();
             }
             
             AnimController.PlayPush();
+            
 
         }
         else

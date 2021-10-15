@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerUI playerUI;
     private WallRun wallRun;
     private Climbing climbing;
-    public CheckPoints CurrentCheckPoint = null;
+    //public CheckPoints CurrentCheckPoint = null;
 
 
 
@@ -34,13 +34,14 @@ public class PlayerManager : MonoBehaviour
     private const float RegenRate = 5.0f;
     private float MaxHP = 100.0f;
 
-    private Vector3 CheckpointPos = new Vector3(0.0f, 0.0f, 0.0f);
+    private Vector3 CheckpointPos = new Vector3(1000, 1000, 1000);
     private int CheckPointIndex = 0;
     private bool InPauseMenu = false;
 
     private string FinalTime;
 
     private List<Coroutine> delays = new List<Coroutine>();
+    
 
     public float PlayerStam
     {
@@ -123,11 +124,16 @@ public class PlayerManager : MonoBehaviour
        {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            CheckPointIndex = 0;
+
+            //CheckpointPos = new Vector3(0, 0, -9);
        }
        else
        {
             Destroy(gameObject);
        }
+
+
     }
 
     private void Update()
@@ -148,13 +154,14 @@ public class PlayerManager : MonoBehaviour
     public void RegisterWallRun(WallRun wallRun)
     {
         this.wallRun = wallRun;
-
+        
         OnWallRunRegistered?.Invoke();
     }
 
     public void RegisterMoving(BasicMovement moving)
     {
         this.basicMov = moving;
+        //moving.transform.position = CheckpointPos;
 
         OnBasicMovementRegistered?.Invoke();
     }

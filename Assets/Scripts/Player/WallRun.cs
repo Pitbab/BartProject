@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -66,14 +67,16 @@ public class WallRun : MonoBehaviour
 
             //give little tilt when wall running
             transform.rotation = Quaternion.Lerp(transform.rotation, ZRotation, Time.deltaTime * TiltSpeed);
-
+#if DEBUG
             if (!CheatManager.Instance.NoRessources)
             {
+#endif
                 StopAllCoroutines();
                 PlayerManager.Instance.DepleteStamina(WallRunCost);
+#if DEBUG
             }
-
-
+#endif
+            
         }
         else
         {
@@ -97,7 +100,10 @@ public class WallRun : MonoBehaviour
         //return (Physics.CheckSphere(CheckPos, 0.8f, RunnableWall));
         //------------------------------------------------------------------------------------------------//
 
-        return(Physics.Raycast(transform.position, -transform.right, WallCheckDist, RunnableWall));
+        Vector3 CheckPos = -transform.right + transform.position + new Vector3(0, 0.8f, +0.5f);
+        return (Physics.CheckSphere(CheckPos, 0.5f, RunnableWall));
+        
+        //return(Physics.Raycast(transform.position, -transform.right, WallCheckDist, RunnableWall));
     }
 
     public bool CheckWallRight()
@@ -109,7 +115,9 @@ public class WallRun : MonoBehaviour
         //return (Physics.CheckSphere(CheckPos, 0.8f, RunnableWall));
         //------------------------------------------------------------------------------------------------//
 
-        return (Physics.Raycast(transform.position, transform.right, WallCheckDist, RunnableWall));
+        Vector3 CheckPos = transform.right + transform.position + new Vector3(0, 0.8f, +0.5f);
+        return (Physics.CheckSphere(CheckPos, 0.5f, RunnableWall));
+        //return (Physics.Raycast(transform.position, transform.right, WallCheckDist, RunnableWall));
     }
 
     private bool CheckGroundWall()
@@ -126,5 +134,9 @@ public class WallRun : MonoBehaviour
         }
     }
 
-
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position + new Vector3(-0.5f, 0.8f, +0.2f), 0.5f);
+        Gizmos.DrawSphere(transform.position + new Vector3(0.5f, 0.8f, +0.2f), 0.5f);
+    }
 }

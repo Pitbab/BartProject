@@ -68,23 +68,31 @@ public class BasicMovement : MonoBehaviour
     //Temporary testing for audio --------------------------------------------------//
     [SerializeField] private AudioSource PlayerMouth;
     [SerializeField] private AudioClip test;
+    public List<AudioClip> StepSFX = new List<AudioClip>();
     
 
 
     void Start()
     {
+#if DEBUG
         CheatManager.ResetLevel = ResetLevel;
-
-        if (PlayerManager.Instance.GetCheckpointindex != 0)
+#endif
+        
+        //StartingPos = PlayerManager.Instance.GetCheckpointPos;
+        if (PlayerPrefs.HasKey("x"))
         {
-            StartingPos = PlayerManager.Instance.GetCheckpointPos;
+            StartingPos.x = PlayerPrefs.GetFloat("x");
+            StartingPos.y = PlayerPrefs.GetFloat("y");
+            StartingPos.z = PlayerPrefs.GetFloat("z");
         }
         else
         {
-            StartingPos = GameObject.Find("StartingPos").transform.position;
+            StartingPos = new Vector3(0, 0, -9);
         }
-        
+
         transform.position = StartingPos;
+        
+
         PlayerManager.Instance.RegisterMoving(this);
 
         Controller = GetComponent<CharacterController>();
@@ -119,8 +127,9 @@ public class BasicMovement : MonoBehaviour
         {
             AnimManager.PlaySlidingAnim();
         }
-
+#if DEBUG
         CheatCollision();
+#endif
     }
 
 
@@ -138,8 +147,10 @@ public class BasicMovement : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
         if(!Climb.Climb() &&AnimManager.GetAnimName() != "EndOfWall")
         {
+#if DEBUG
             if(!CheatManager.Instance.Flying)
             {
+#endif
                 //Run faster
                 if (Input.GetKey(KeyCode.LeftShift) && IsOnGround && PlayerManager.Instance.PlayerStam > 0)
                 {
@@ -151,24 +162,28 @@ public class BasicMovement : MonoBehaviour
                     {
                         CurrentSpeed = RunningSpeed;
                     }
-
+#if DEBUG
                     if (!CheatManager.Instance.NoRessources)
                     {
+#endif
                         if (x != 0 || z != 0)
                         {
                             PlayerManager.Instance.DepleteStamina(RunningCost);
                             IsRunning = true;
                         }
+#if DEBUG
                     }
+#endif
                 }
                 else
                 {
                     IsRunning = false;
                     CurrentSpeed = WalkingSpeed;
                 }
+#if DEBUG
             }
-
-
+#endif
+            
             Controller.Move(move * CurrentSpeed * Time.deltaTime);
         }
 
@@ -225,32 +240,46 @@ public class BasicMovement : MonoBehaviour
     {
         if (Velocity.y < velocityForRoll)
         {
-            AnimManager.PlayFallingAnim();
-
-            if (CheckGround())
-            {
-                AnimManager.StopFallingAnim();
-            }
             Debug.Log("<color=red>Falling from high, Do a Roll</color>");
+            AnimManager.PlayFallingAnim();
+            float lastvel = Velocity.y;
+
+            if (!InLowGrav)
+            {
+                if (CheckGround())
+                {
+                    if (lastvel < -40)
+                    {
+                        PlayerManager.Instance.InstantDeath();
+                    }
+                
+                    AnimManager.StopFallingAnim();
+                }
+            }
         }
     }
 
     private void Jumping()
     {
-
+#if DEBUG
         if(CheatManager.Instance.Flying)
         {
+            
             ToolNoGravity();
         }
         else
         {
+#endif
             //if in no gravity Zone
             if (InLowGrav)
             {
+                AnimManager.SoftLanding();
+                AnimManager.StopFallingAnim();
                 NoGravity();
             }
             else
             {
+                AnimManager.NoSoftLanding();
 
                 if (CheckGround() && Velocity.y < 0)
                 {
@@ -285,8 +314,9 @@ public class BasicMovement : MonoBehaviour
 
                 Velocity.y += Gravity * Time.deltaTime;
             }
+#if DEBUG
         }
-
+#endif
         Controller.Move(Velocity * Time.deltaTime);
     }
 
@@ -393,6 +423,8 @@ public class BasicMovement : MonoBehaviour
 
     //------------------------------------------------------------------------------------------//for tools//-----------------------------------------------------------------------------//
     //Respawn a startingpoints
+    
+#if DEBUG
     private void ResetLevel()
     {
         Controller.enabled = false;
@@ -432,6 +464,8 @@ public class BasicMovement : MonoBehaviour
             Controller.detectCollisions = true;
         }
     }
+    
+#endif
 
 
 }

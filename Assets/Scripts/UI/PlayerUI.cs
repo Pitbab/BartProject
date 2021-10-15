@@ -156,7 +156,7 @@ public class PlayerUI : MonoBehaviour
     {
         Time.timeScale = NormalTimeScale;
         PlayerManager.Instance.ChangeMenuState();
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu 1");
     }
 
     public void QuitGame()

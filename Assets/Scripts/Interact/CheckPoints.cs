@@ -27,7 +27,10 @@ public class CheckPoints : MonoBehaviour
     public void SetCheckPoint()
     {
         Debug.Log("CheckpointSet");
-        PlayerManager.Instance.CurrentCheckPoint = this;
+        //PlayerManager.Instance.CurrentCheckPoint = this;
+        PlayerPrefs.SetFloat("x", SpawnPlace.transform.position.x);
+        PlayerPrefs.SetFloat("y", SpawnPlace.transform.position.y);
+        PlayerPrefs.SetFloat("z", SpawnPlace.transform.position.z);
         PlayerManager.Instance.ChangeCheckPoint(SpawnPlace.transform.position, index);
         ChangeColor();
         IsActive = true;

@@ -2,11 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
 {
 
      public static AudioManager Instance;
+
+     public List<AudioClip> hurtSFX = new List<AudioClip>();
+     public List<AudioClip> StepSFX = new List<AudioClip>();
+
+     public AudioClip DeadSFX;
 
      private void Awake()
      {
@@ -25,5 +31,7 @@ public class AudioManager : MonoBehaviour
      {
           AudioSource.PlayClipAtPoint(clip, position, volume);
      }
+
+
      
 }

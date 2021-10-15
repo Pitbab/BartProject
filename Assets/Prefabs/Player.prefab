@@ -772,6 +772,37 @@ Transform:
   m_Father: {fileID: 652965163}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7664944847497198041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 962359563867981532}
+  m_Layer: 0
+  m_Name: Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &962359563867981532
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7664944847497198041}
+  m_LocalRotation: {x: 0.000000020489097, y: -2.770898e-12, z: 3.2403062e-13, w: 1}
+  m_LocalPosition: {x: 0, y: 1.646, z: 0.131}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1699962390}
+  m_Father: {fileID: 1697716012}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &427358589
 CharacterController:
   m_ObjectHideFlags: 0
@@ -821,6 +852,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af22f5fccb4e23044ac58116b8987c2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ArmMover:
+    rig: {fileID: 0}
+    active: 0
 --- !u!114 &427358590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -990,18 +1024,7 @@ MonoBehaviour:
   ModeIndex: 0
   CurrentMana: 100
   UI: {fileID: 0}
---- !u!114 &4063997553357612778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7042346378502837016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 322a4d29c3bae9141aeacc7be127c885, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  HoldingParticles: {fileID: 0}
 --- !u!114 &859759382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,37 +1063,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GroundPlace: {fileID: 520690247}
---- !u!1 &7664944847497198041
-GameObject:
+--- !u!114 &4063997553357612778
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 962359563867981532}
-  m_Layer: 0
-  m_Name: Target
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &962359563867981532
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7664944847497198041}
-  m_LocalRotation: {x: 0.000000020489097, y: -2.770898e-12, z: 3.2403062e-13, w: 1}
-  m_LocalPosition: {x: 0, y: 1.646, z: 0.131}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1699962390}
-  m_Father: {fileID: 1697716012}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 7042346378502837016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322a4d29c3bae9141aeacc7be127c885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7888645639408889417
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1116,17 +1120,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7f086408e69717a4bafc341814469063,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.13
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7f086408e69717a4bafc341814469063,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.34
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7f086408e69717a4bafc341814469063,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.82
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7f086408e69717a4bafc341814469063,
         type: 3}

@@ -53,15 +53,18 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.tag == "Pickable")
         {
             Direction = collision.GetContact(0).normal.normalized;
+            Destroy(gameObject, LifeTime);
         }
         
         if(collision.gameObject.name != "Cannon")
         {
-            Destroy(gameObject, LifeTime);
+            Destroy(gameObject);
         }
 
         if (collision.gameObject.tag == "Player")
         {
+            PlayerAudioCollection audio = collision.gameObject.GetComponent<PlayerAudioCollection>();
+            audio.PlayHurt(audio.transform.position, 0.5f);
             Debug.Log("hit");
             PlayerManager.Instance.InstantDamage(10);
             Destroy(gameObject);

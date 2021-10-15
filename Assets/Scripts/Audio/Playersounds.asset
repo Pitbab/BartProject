@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 079f9735deea17b4797d4141332bc129, type: 3}
+  m_Name: Playersounds
+  m_EditorClassIdentifier: 
+  hurtSFX:
+  - {fileID: 8300000, guid: 848e2cf6a78ae974c98bfc4afef6ba0d, type: 3}
+  - {fileID: 8300000, guid: ab4dac2e2ee9320488cdce3aa131f366, type: 3}
+  StepSFX:
+  - {fileID: 8300000, guid: c48a57070bca25841b0cc6b7de43cca9, type: 3}
+  - {fileID: 8300000, guid: 88b21dd162d93c046a8641d73f6402b8, type: 3}
+  - {fileID: 8300000, guid: d555c0b72f6e9e541bdbdec8c6bc005e, type: 3}
+  DeadSFX: {fileID: 8300000, guid: 848e2cf6a78ae974c98bfc4afef6ba0d, type: 3}

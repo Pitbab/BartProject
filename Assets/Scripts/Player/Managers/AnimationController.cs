@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -12,6 +13,7 @@ public class AnimationController : MonoBehaviour
     private const string WallEnd = "WallEnd";
     private const string Trapped = "Trapped";
     private const string Push = "Push";
+    private const string NoRoll = "NoRoll";
 
     [SerializeField] private RigBuilder.RigLayer ArmMover;
 
@@ -110,9 +112,25 @@ public class AnimationController : MonoBehaviour
         ArmMover.rig.weight = 0;
     }
 
+    public void SoftLanding()
+    {
+        PlayerAnimator.SetBool(NoRoll, true);
+    }
+
+    public void NoSoftLanding()
+    {
+        PlayerAnimator.SetBool(NoRoll, false);
+    }
+
     private IEnumerator PutArmDown()
     {
         yield return null;
+    }
+
+    public void FootOnGround()
+    {
+        PlayerAudioCollection audio = GetComponent<PlayerAudioCollection>();
+        audio.PlayStep(transform.position, 0.5f);
     }
 
 

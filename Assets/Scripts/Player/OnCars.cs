@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class OnCars : MonoBehaviour
@@ -11,7 +8,6 @@ public class OnCars : MonoBehaviour
     private LayerMask CarsLayer;
     private float CheckGroundRadius = 0.3f;
     private GameObject CurrentCar;
-    private const string RotCorrector = "RotationCorrector";
     
     void Start()
     {
@@ -31,8 +27,21 @@ public class OnCars : MonoBehaviour
         if (Physics.Raycast(GroundCheck, out hitInfo, CheckGroundRadius, CarsLayer))
         {
             CurrentCar = hitInfo.transform.gameObject;
-            this.transform.parent = CurrentCar.transform;
-        }
+            MovingCar interactible = CurrentCar.GetComponent<MovingCar>();
+            if (interactible.Interactible == true)
+            {
+                this.transform.parent = CurrentCar.transform; 
+            }
+            else
+            {
+                this.transform.parent = null;
+            }
 
+        }
+        else
+        {
+            this.transform.parent = null;
+        }
     }
+    
 }

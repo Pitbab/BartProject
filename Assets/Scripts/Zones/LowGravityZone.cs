@@ -7,12 +7,13 @@ public class LowGravityZone : MonoBehaviour
 
     private BasicMovement PlayerMov;
     
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Player")
         {
             PlayerMov = other.GetComponent<BasicMovement>();
             PlayerMov.InLowGrav = true;
+            PlayerMov.Velocity = Vector3.zero;
         }
     }
     

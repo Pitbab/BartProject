@@ -15,6 +15,6 @@ public class WinUI : MonoBehaviour
     }
     public void BackTOMain()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu 1");
     }
 }

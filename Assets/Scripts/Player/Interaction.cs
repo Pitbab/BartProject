@@ -18,6 +18,7 @@ public class Interaction : MonoBehaviour
         {
             CheckForObjectToInteract();
         }
+        
     }
 
     private void CheckForObjectToInteract()
