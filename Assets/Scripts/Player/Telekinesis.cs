@@ -38,6 +38,10 @@ public class Telekinesis : MonoBehaviour
 
     [SerializeField] private GameObject HoldingParticles;
     [SerializeField] private List<ParticleSystem> BlastParticles;
+    
+    //test outline
+    private GameObject Targeted;
+    private Outline Indicator;
 
 
     private void Start()
@@ -53,6 +57,7 @@ public class Telekinesis : MonoBehaviour
     {
         TelekinesisRange = new Ray(Upper.transform.position, Upper.transform.forward * MaxRange);
 
+        UpdateOutline();
         UpdateModeIndex();
 
         if(ModeIndex == 0)
@@ -73,6 +78,25 @@ public class Telekinesis : MonoBehaviour
             RegenMana();
         }
 
+    }
+
+    private void UpdateOutline()
+    {
+
+        RaycastHit hit;
+        if (Physics.Raycast(TelekinesisRange, out hit, MaxRange, Pickable))
+        {
+            Targeted = hit.transform.gameObject;
+            Indicator = Targeted.GetComponent<Outline>();
+            Indicator.enabled = true;
+        }
+        else
+        {
+            if (Indicator != null)
+            {
+                Indicator.enabled = false;
+            }
+        }
     }
 
     private void ObjectSelection()

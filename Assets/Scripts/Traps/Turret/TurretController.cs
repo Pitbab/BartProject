@@ -27,9 +27,6 @@ public class TurretController : MonoBehaviour
 
     [SerializeField] private AudioClip ShootSfx;
 
-    //test for tools
-    bool Started = false;
-
     private void Start()
     {
         BulletData = Bullet.GetComponent<Projectile>();
@@ -51,52 +48,46 @@ public class TurretController : MonoBehaviour
 
     private void CheckForPlayer()
     {
-        if (Physics.CheckSphere(transform.position, TurretRange, Player))
+        
+        if (PlayerInRange())
         {
-            PlayerMovement = PlayerManager.Instance.BasicMovement;
+            Vector3 direction = ((PlayerPos.position + (PlayerMovement.PredictedVel * (CheckDist() / BulletData.BulletSpeed))) - transform.position);
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            TurretHead.transform.rotation = Quaternion.Slerp(TurretHead.transform.rotation, rotation, Time.deltaTime * RotationRate);
 
-            PlayerPos = PlayerMovement.transform;
-
-            if (CheckDist() < TurretRange)
+            if (Timer >= timeToShoot)
             {
-                Vector3 direction = ((PlayerPos.position + (PlayerMovement.PredictedVel * (CheckDist() / BulletData.BulletSpeed))) - transform.position);
-                
-                Quaternion rotation = Quaternion.LookRotation(direction);
-                TurretHead.transform.rotation = Quaternion.Slerp(TurretHead.transform.rotation, rotation, Time.deltaTime * RotationRate);
-
-                if (Timer >= timeToShoot)
-                {
-                    AudioManager.Instance.PlaySfx(ShootSfx, transform.position, 1);
-                    Instantiate(Bullet, BarelEnd.transform.position, rotation);
-                    timeToShoot = Random.Range(MinCooldown, MaxCooldown);
-                    Timer = 0.0f;
-                }
-                else
-                {
-                    Timer += Time.deltaTime;
-                }
+                Shoot(rotation);
+            }
+            else
+            {
+                Timer += Time.deltaTime;
             }
         }
     }
 
-    //private void OnDrawGizmos()
-    //{
-        //if(Started)
-        //{
-            //if (CheckDist() < TurretRange)
-            //{
-                //Gizmos.color = new Color(1, 0, 0, 0.3f);
-            //}
-            //else
-            //{
-                //Gizmos.color = new Color(0, 1, 0, 0.3f);
-            //}
-        //}
-        //else
-        //{
-            //Gizmos.color = new Color(1, 1, 1, 0.3f);
-        //}
+    private bool PlayerInRange()
+    {
+        if (Physics.CheckSphere(transform.position, TurretRange, Player))
+        {
+            PlayerMovement = PlayerManager.Instance.BasicMovement;
+            PlayerPos = PlayerMovement.transform;
+            if (CheckDist() < TurretRange)
+            {
+                return true;
+            }
+        }
 
-        //Gizmos.DrawSphere(transform.position, TurretRange);
-    //}
+        return false;
+    }
+
+    private void Shoot(Quaternion rotation)
+    {
+        AudioManager.Instance.PlaySfx(ShootSfx, transform.position, 1);
+        Instantiate(Bullet, BarelEnd.transform.position, rotation);
+        timeToShoot = Random.Range(MinCooldown, MaxCooldown);
+        Timer = 0.0f;
+    }
 }
+
+

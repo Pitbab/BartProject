@@ -19,6 +19,7 @@ public class WallRun : MonoBehaviour
 
     //testing
     private BasicMovement basicMoving;
+    public Action LeaveWall;
 
 
     private void Start()
@@ -40,13 +41,11 @@ public class WallRun : MonoBehaviour
     {
         Quaternion ZRotation = Quaternion.identity;
         
-        if (((CheckWallLeft() && Input.GetKey(KeyCode.A) || (CheckWallRight() && Input.GetKey(KeyCode.D))) && !CheckGroundWall() && !basicMoving.JumpFormWall && PlayerManager.Instance.PlayerStam > 0)) //hold a or d to stick to the wall
+        if ((CheckWallLeft() || (CheckWallRight())) && !basicMoving.JumpFormWall && PlayerManager.Instance.PlayerStam > 0) //hold a or d to stick to the wall
         {
             /*
-             
              lock on feature to stay on the wall when looking away to jump on another wall
-             
-              
+             --switch y gravity to 0 but put a timer when on wall
              */
             IsWallRunning = true;
 
@@ -71,7 +70,6 @@ public class WallRun : MonoBehaviour
             if (!CheatManager.Instance.NoRessources)
             {
 #endif
-                StopAllCoroutines();
                 PlayerManager.Instance.DepleteStamina(WallRunCost);
 #if DEBUG
             }
@@ -80,6 +78,12 @@ public class WallRun : MonoBehaviour
         }
         else
         {
+
+            if (IsWallRunning == true)
+            {
+                basicMoving.LeaveWall?.Invoke();
+            }
+            
             IsWallRunning = false;
             // Normal Gravity
             basicMoving.Gravity = -25.0f;

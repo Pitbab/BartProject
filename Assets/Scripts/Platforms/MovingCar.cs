@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
-using Unity.Collections;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
@@ -25,6 +20,10 @@ public class MovingCar : MonoBehaviour
     private BoxCollider Coll;
 
     public bool Interactible;
+
+    private const string Right = "Right";
+    private const string Left = "Left";
+    private const string EndWall = "endwall";
 
     private void Start()
     {
@@ -59,12 +58,12 @@ public class MovingCar : MonoBehaviour
             yield return null;
         }
 
-        if (TargetLocation.name.Contains("Left"))
+        if (TargetLocation.name.Contains(Left))
         {
             childMesh.Rotate(0,0, -Rotator);
             Coll.size = new Vector3(Coll.size.z, Coll.size.y, Coll.size.x);
         }
-        else if(TargetLocation.name.Contains("Right"))
+        else if(TargetLocation.name.Contains(Right))
         {
             childMesh.Rotate(0,0, Rotator);
             Coll.size = new Vector3(Coll.size.z, Coll.size.y, Coll.size.x);
@@ -103,7 +102,7 @@ public class MovingCar : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name.Contains("endwall"))
+        if (other.name.Contains(EndWall))
         {
             Interactible = false;
         }
@@ -111,7 +110,7 @@ public class MovingCar : MonoBehaviour
     
     private void OnTriggerExit(Collider other)
     {
-        if (other.name.Contains("endwall"))
+        if (other.name.Contains(EndWall))
         {
             Interactible = true;
         }

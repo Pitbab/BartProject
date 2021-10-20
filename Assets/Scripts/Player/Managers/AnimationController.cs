@@ -15,7 +15,11 @@ public class AnimationController : MonoBehaviour
     private const string Push = "Push";
     private const string NoRoll = "NoRoll";
 
+
+    private const float TimeToMoveArm = 0.3f;
+    private Coroutine CurrentArmRoutine;
     [SerializeField] private RigBuilder.RigLayer ArmMover;
+    
 
     private void Start()
     {
@@ -104,12 +108,20 @@ public class AnimationController : MonoBehaviour
 
     public void PlayHold()
     {
-        ArmMover.rig.weight = 100;
+        if (CurrentArmRoutine != null)
+        {
+            StopCoroutine(CurrentArmRoutine);  
+        }
+        CurrentArmRoutine = StartCoroutine(MoveArm(1));
     }
 
     public void StopHold()
     {
-        ArmMover.rig.weight = 0;
+        if (CurrentArmRoutine != null)
+        {
+            StopCoroutine(CurrentArmRoutine);  
+        }
+        CurrentArmRoutine = StartCoroutine(MoveArm(0));
     }
 
     public void SoftLanding()
@@ -122,9 +134,21 @@ public class AnimationController : MonoBehaviour
         PlayerAnimator.SetBool(NoRoll, false);
     }
 
-    private IEnumerator PutArmDown()
+    private IEnumerator MoveArm(float weight)
     {
-        yield return null;
+        float timer = 0;
+
+        float CurrentValue = ArmMover.rig.weight;
+
+        while (timer < TimeToMoveArm)
+        {
+            timer += Time.deltaTime;
+            float lerpValue = timer / TimeToMoveArm;
+
+            ArmMover.rig.weight = Mathf.Lerp(CurrentValue, weight, lerpValue);
+            yield return null;
+        }
+
     }
 
     public void FootOnGround()

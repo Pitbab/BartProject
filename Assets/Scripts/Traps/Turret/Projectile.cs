@@ -6,18 +6,20 @@ public class Projectile : MonoBehaviour
 {
     public float BulletSpeed = 30.0f;
     public bool IsCatched = false;
-    public bool InZone = false;
     private float LifeTime = 1.0f;
-    private MeshRenderer Renderer;
-    private Material StartingMat;
     [SerializeField] private Material ColorIndicator;
 
     private Vector3 Direction = Vector3.zero;
 
+    //tags
+    private const string Breakable = "Breakable";
+    private const string Pickable = "Pickable";
+    private const string Player = "Player";
+
+    private const string Cannon = "Cannon";
+
     private void Start()
     {
-        Renderer = GetComponent<MeshRenderer>();
-        StartingMat = Renderer.material;
         Direction = transform.forward;
     }
     private void Update()
@@ -26,42 +28,28 @@ public class Projectile : MonoBehaviour
         {
             transform.position += Direction * BulletSpeed * Time.deltaTime;
         }
-        
-        
-        ChangeMats();
     }
-
-    private void ChangeMats()
-    {
-        if(InZone == true)
-        {
-            Renderer.material = ColorIndicator;
-        }
-        else
-        {
-            Renderer.material = StartingMat;
-        }
-    }
+    
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "Breakable")
+        if(collision.collider.CompareTag(Breakable))
         {
             Destroy(collision.gameObject);
         }
 
-        if (collision.gameObject.tag == "Pickable")
+        if (collision.gameObject.CompareTag(Pickable))
         {
             Direction = collision.GetContact(0).normal.normalized;
             Destroy(gameObject, LifeTime);
         }
         
-        if(collision.gameObject.name != "Cannon")
+        if(collision.gameObject.name != Cannon)
         {
             Destroy(gameObject);
         }
 
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag(Player))
         {
             PlayerAudioCollection audio = collision.gameObject.GetComponent<PlayerAudioCollection>();
             audio.PlayHurt(audio.transform.position, 0.5f);

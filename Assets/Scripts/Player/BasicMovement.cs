@@ -50,6 +50,8 @@ public class BasicMovement : MonoBehaviour
     private LayerMask Pickable;
     private LayerMask Car;
     private LayerMask AllLayer;
+
+    public Action LeaveWall;
     
     public float Gravity;
 
@@ -91,7 +93,7 @@ public class BasicMovement : MonoBehaviour
         }
 
         transform.position = StartingPos;
-        
+        LeaveWall = LeavingWall;
 
         PlayerManager.Instance.RegisterMoving(this);
 
@@ -297,13 +299,9 @@ public class BasicMovement : MonoBehaviour
 
                 //jump after wallrun (to improve)
 
-                if (Input.GetKeyDown("space") && wallrun.OnWall && !UseJump)
+                if (Input.GetKeyDown(KeyCode.Space) && wallrun.OnWall && !UseJump)
                 {
-                    Velocity = transform.forward * ForwardWallJumpSpeed;
-                    Velocity += new Vector3(AimTarget.transform.forward.x, 0, AimTarget.transform.forward.z) * ForwardWallJumpSpeed;
-                    Velocity.y = UpwardWallJumpSpeed;
-                    UseJump = true;
-                    AnimManager.PlayjumpAnim();
+                    JumpFromWall();
                 }
 
                 //Reset the jump use if player change wall
@@ -318,6 +316,25 @@ public class BasicMovement : MonoBehaviour
         }
 #endif
         Controller.Move(Velocity * Time.deltaTime);
+    }
+
+    private void JumpFromWall()
+    {
+        Velocity = transform.forward * ForwardWallJumpSpeed;
+        Velocity += new Vector3(AimTarget.transform.forward.x, 0, AimTarget.transform.forward.z) * ForwardWallJumpSpeed;
+        Velocity.y = UpwardWallJumpSpeed;
+        UseJump = true;
+        AnimManager.PlayjumpAnim();
+    }
+
+    private void LeavingWall()
+    {
+        if (!UseJump)
+        {
+            Velocity = transform.forward * ForwardWallJumpSpeed;
+            Velocity += new Vector3(AimTarget.transform.forward.x, 0, AimTarget.transform.forward.z) * ForwardWallJumpSpeed;
+        }
+
     }
 
     private void NoGravity()
