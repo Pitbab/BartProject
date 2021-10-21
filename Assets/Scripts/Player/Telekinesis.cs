@@ -329,12 +329,6 @@ public class Telekinesis : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.matrix = PowerBox.transform.localToWorldMatrix;
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(Vector3.zero, PowerBoxSize);
-    }
 
     //putting an indicator on the bullet might be better
     public bool CheckForBullets()
@@ -351,4 +345,12 @@ public class Telekinesis : MonoBehaviour
         return false;
 
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.matrix = PowerBox.transform.localToWorldMatrix;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(Vector3.zero, PowerBoxSize);
+    }
+    
 }

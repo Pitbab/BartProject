@@ -124,6 +124,7 @@ MonoBehaviour:
   m_SourceFontFile: {fileID: 0}
   m_AtlasPopulationMode: 0
   m_FaceInfo:
+    m_FaceIndex: 0
     m_FamilyName: Space Age
     m_StyleName: Regular
     m_PointSize: 65
@@ -1881,6 +1882,7 @@ MonoBehaviour:
   - {fileID: 295905867779191444}
   m_AtlasTextureIndex: 0
   m_IsMultiAtlasTexturesEnabled: 0
+  m_ClearDynamicDataOnBuild: 0
   m_UsedGlyphRects:
   - m_X: 0
     m_Y: 0

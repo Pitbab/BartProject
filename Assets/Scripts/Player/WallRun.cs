@@ -41,7 +41,7 @@ public class WallRun : MonoBehaviour
     {
         Quaternion ZRotation = Quaternion.identity;
         
-        if ((CheckWallLeft() || (CheckWallRight())) && !basicMoving.JumpFormWall && PlayerManager.Instance.PlayerStam > 0) //hold a or d to stick to the wall
+        if (Input.GetKey(KeyCode.LeftShift) && (CheckWallLeft() || (CheckWallRight())) && !basicMoving.JumpFormWall && PlayerManager.Instance.PlayerStam > 0) //hold a or d to stick to the wall
         {
             /*
              lock on feature to stay on the wall when looking away to jump on another wall
@@ -70,7 +70,7 @@ public class WallRun : MonoBehaviour
             if (!CheatManager.Instance.NoRessources)
             {
 #endif
-                PlayerManager.Instance.DepleteStamina(WallRunCost);
+                //PlayerManager.Instance.DepleteStamina(WallRunCost);
 #if DEBUG
             }
 #endif

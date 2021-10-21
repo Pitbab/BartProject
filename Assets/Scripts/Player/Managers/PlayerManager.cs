@@ -160,7 +160,7 @@ public class PlayerManager : MonoBehaviour
 
     public void RegisterMoving(BasicMovement moving)
     {
-        this.basicMov = moving;
+        basicMov = moving;
         //moving.transform.position = CheckpointPos;
 
         OnBasicMovementRegistered?.Invoke();
