@@ -6,7 +6,7 @@ public class DestroyWall : MonoBehaviour
 {
     private Rigidbody[] Bodies;
     private BoxCollider PreDestroyCollider;
-    private const float TimeToDestroy = 2.0f;
+    private const float TimeToDestroy = 4.0f;
     private void Start()
     {
         PreDestroyCollider = GetComponent<BoxCollider>();
