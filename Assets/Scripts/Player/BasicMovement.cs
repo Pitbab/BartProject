@@ -244,19 +244,21 @@ public class BasicMovement : MonoBehaviour
         {
             Debug.Log("<color=red>Falling from high, Do a Roll</color>");
             AnimManager.PlayFallingAnim();
-            float lastvel = Velocity.y;
 
-            if (!InLowGrav)
+        }
+        
+        float lastvel = Velocity.y;
+
+        if (!InLowGrav)
+        {
+            if (CheckGround())
             {
-                if (CheckGround())
+                if (lastvel < -60)
                 {
-                    if (lastvel < -40)
-                    {
-                        PlayerManager.Instance.InstantDeath();
-                    }
-                
-                    AnimManager.StopFallingAnim();
+                    PlayerManager.Instance.InstantDeath();
                 }
+                
+                AnimManager.StopFallingAnim();
             }
         }
     }
@@ -281,7 +283,7 @@ public class BasicMovement : MonoBehaviour
             }
             else
             {
-                AnimManager.NoSoftLanding();
+                //AnimManager.NoSoftLanding();
 
                 if (CheckGround() && Velocity.y < 0)
                 {

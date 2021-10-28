@@ -15,7 +15,9 @@ public class AnimationController : MonoBehaviour
     private const string Push = "Push";
     private const string NoRoll = "NoRoll";
     private const string RotAxis = "Rot";
+    private const string MouseXAxis = "Mouse X";
     private float mouseXSmooth;
+    private const float SmoothingSpeed = 6.0f; 
 
 
     private const float TimeToMoveArm = 0.3f;
@@ -30,7 +32,7 @@ public class AnimationController : MonoBehaviour
 
     private void Update()
     {
-        mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Mouse X"), 6 * Time.deltaTime);
+        mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis(MouseXAxis), SmoothingSpeed * Time.deltaTime);
         PlayerAnimator.SetFloat(RotAxis, mouseXSmooth);
         //Debug.Log(GetAnimName());
     }

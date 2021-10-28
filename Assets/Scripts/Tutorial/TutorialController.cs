@@ -7,6 +7,7 @@ public class TutorialController : MonoBehaviour
 {
     private Vector3 LastStep;
     private Vector3 PlayerPos;
+    private List<PickableObject> Pickable = new List<PickableObject>();
 
     public static TutorialController Instance;
     
@@ -25,6 +26,11 @@ public class TutorialController : MonoBehaviour
         LastStep = new Vector3(0, 0, 9);
     }
 
+    public void AddObject(PickableObject Obj)
+    {
+        Pickable.Add(Obj);
+    }
+
     public void ChangeLastStep(Vector3 Step)
     {
         LastStep = Step;
@@ -32,10 +38,23 @@ public class TutorialController : MonoBehaviour
 
     public void PlayerRestart(CharacterController controller)
     {
-        BasicMovement Player = PlayerManager.Instance.BasicMovement;
-        Player.Velocity = Vector3.zero;
+        //restart object if they are unreachable
+        foreach (var Obj in Pickable)
+        {
+            Obj.ResetState();
+        }
         
-        //not working because characterController need to disable it
+        //reset player pos
+        BasicMovement Player = controller.gameObject.GetComponent<BasicMovement>();
+        Player.Velocity = Vector3.zero;
+
+        AnimationController Anims = controller.gameObject.GetComponent<AnimationController>();
+        Anims.SoftLanding();
+        //Anims.StopFallingAnim();
+
+
+
+        //need to use this because cannot override characterController set pos
         controller.enabled = false;
         Player.transform.position = LastStep;
         controller.enabled = true;
