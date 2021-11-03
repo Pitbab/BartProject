@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class WallRun : MonoBehaviour
 {
@@ -20,6 +22,9 @@ public class WallRun : MonoBehaviour
     //testing
     private BasicMovement basicMoving;
     public Action LeaveWall;
+
+    public GameObject CurrentWall;
+    public GameObject LastWall;
 
 
     private void Start()
@@ -64,6 +69,8 @@ public class WallRun : MonoBehaviour
                 ZRotation = Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, -TiltValue);
             }
 
+            LastWall = CurrentWall;
+
             //give little tilt when wall running
             transform.rotation = Quaternion.Lerp(transform.rotation, ZRotation, Time.deltaTime * TiltSpeed);
 #if DEBUG
@@ -105,6 +112,14 @@ public class WallRun : MonoBehaviour
         //------------------------------------------------------------------------------------------------//
 
         Vector3 CheckPos = -transform.right + transform.position + new Vector3(0, 0.8f, +0.5f);
+        Ray left = new Ray(transform.position, -transform.right);
+        
+        Physics.Raycast(left, out RaycastHit hit, WallCheckDist, RunnableWall);
+        if (hit.collider != null)
+        {
+            CurrentWall = hit.collider.gameObject;
+        }
+        
         return (Physics.CheckSphere(CheckPos, 0.5f, RunnableWall));
         
         //return(Physics.Raycast(transform.position, -transform.right, WallCheckDist, RunnableWall));
@@ -120,6 +135,14 @@ public class WallRun : MonoBehaviour
         //------------------------------------------------------------------------------------------------//
 
         Vector3 CheckPos = transform.right + transform.position + new Vector3(0, 0.8f, +0.5f);
+        Ray right = new Ray(transform.position, transform.right);
+        
+        Physics.Raycast(right, out RaycastHit hit, WallCheckDist, RunnableWall);
+        if (hit.collider != null)
+        {
+            CurrentWall = hit.collider.gameObject;
+        }
+        
         return (Physics.CheckSphere(CheckPos, 0.5f, RunnableWall));
         //return (Physics.Raycast(transform.position, transform.right, WallCheckDist, RunnableWall));
     }

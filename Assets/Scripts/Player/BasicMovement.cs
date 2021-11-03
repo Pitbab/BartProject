@@ -108,7 +108,7 @@ public class BasicMovement : MonoBehaviour
         Gravity = -25f;
 
         AllLayer = Ground | Pickable | Car;
-        
+
     }
 
 
@@ -193,6 +193,7 @@ public class BasicMovement : MonoBehaviour
         if(FowardBoost)
         {
             Controller.Move((transform.forward) * RunningSpeed * Time.deltaTime);
+            CurrentSpeed = RunningSpeed;
         }
 
         if (EndOfClimb)
@@ -307,7 +308,7 @@ public class BasicMovement : MonoBehaviour
                 }
 
                 //Reset the jump use if player change wall
-                if (!wallrun.CheckWallLeft() && !wallrun.CheckWallRight())
+                if ((!wallrun.CheckWallLeft() && !wallrun.CheckWallRight()) || wallrun.CurrentWall != wallrun.LastWall )
                 {
                     UseJump = false;
                 }

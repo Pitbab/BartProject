@@ -53,6 +53,8 @@ public class TurretController : MonoBehaviour
         {
             Vector3 direction = ((PlayerPos.position + (PlayerMovement.PredictedVel * (CheckDist() / BulletData.BulletSpeed))) - transform.position);
             Quaternion rotation = Quaternion.LookRotation(direction);
+            
+            
             TurretHead.transform.rotation = Quaternion.Slerp(TurretHead.transform.rotation, rotation, Time.deltaTime * RotationRate);
 
             if (Timer >= timeToShoot)

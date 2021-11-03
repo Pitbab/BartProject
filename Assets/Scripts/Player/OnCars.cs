@@ -37,6 +37,8 @@ public class OnCars : MonoBehaviour
                 this.transform.parent = null;
             }
 
+            this.transform.parent = CurrentCar.transform;
+
         }
         else
         {
