@@ -180,6 +180,20 @@ public class PlayerManager : MonoBehaviour
         OnStaminaChanged?.Invoke(Stamina);
     }
 
+    public void GetStam(float amount)
+    {
+        if (Stamina + amount > MaxStamina)
+        {
+            Stamina = MaxStamina;
+        }
+        else
+        {
+            Stamina += amount;
+        }
+        
+        OnStaminaChanged?.Invoke(Stamina);
+    }
+
     public void ChangeCheckPoint(Vector3 pos, int index)
     {
         CheckPointIndex = index;

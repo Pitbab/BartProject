@@ -77,7 +77,7 @@ public class WallRun : MonoBehaviour
             if (!CheatManager.Instance.NoRessources)
             {
 #endif
-                //PlayerManager.Instance.DepleteStamina(WallRunCost);
+                PlayerManager.Instance.DepleteStamina(WallRunCost);
 #if DEBUG
             }
 #endif

@@ -28,7 +28,7 @@ public class Telekinesis : MonoBehaviour
     public float CurrentMana = 100f;
     private const float ManaRegenRate = 5.0f;
     private const float ManaUseRate = 5.0f;
-    private const float BulletStopCost = 10.0f;
+    private const float BulletStopCost = 2.0f;
 
     [SerializeField] private GameObject UI;
     private PlayerUI ui;
@@ -188,9 +188,8 @@ public class Telekinesis : MonoBehaviour
 #if DEBUG
             }
 #endif
-
-
             //calculate the new position
+
             Vector3 pos = HoldingPlace.localPosition;
             pos.z += Input.mouseScrollDelta.y;
             HoldingPlace.localPosition = pos;

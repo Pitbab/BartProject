@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
     public bool IsCatched = false;
     private float LifeTime = 1.0f;
     [SerializeField] private Material ColorIndicator;
+    [SerializeField] private GameObject Explosion;
 
     private Vector3 Direction = Vector3.zero;
 
@@ -15,7 +16,8 @@ public class Projectile : MonoBehaviour
     private const string Breakable = "Breakable";
     private const string Pickable = "Pickable";
     private const string Player = "Player";
-
+    private const string Drone = "Drone";
+    
     private const string Cannon = "Cannon";
 
     private void Start()
@@ -42,6 +44,31 @@ public class Projectile : MonoBehaviour
         {
             Direction = collision.GetContact(0).normal.normalized;
             Destroy(gameObject, LifeTime);
+        }
+
+        if (collision.collider.CompareTag(Drone))
+        {
+            Debug.Log("Drone touched");
+            if (this.IsCatched)
+            {
+                //instantiate explosion
+                Instantiate(Explosion, collision.transform);
+                //disable the turret
+                TurretController turret = collision.gameObject.GetComponentInChildren<TurretController>();
+                turret.enabled = false;
+                //disable the drone
+                DroneController Drone = collision.gameObject.GetComponent<DroneController>();
+                Drone.Destroyed();
+                //Drone.enabled = false;
+                //make it drop
+                Rigidbody body = collision.gameObject.AddComponent<Rigidbody>();
+                body.useGravity = true;
+                body.mass = 100.0f;
+
+                //destroy the drone
+                Destroy(collision.gameObject, 2.5f);
+
+            }
         }
         
         if(collision.gameObject.name != Cannon)

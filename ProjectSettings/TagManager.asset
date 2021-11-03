@@ -15,6 +15,7 @@ TagManager:
   - Triggers
   - Climable
   - Gravity
+  - Drone
   layers:
   - Default
   - TransparentFX

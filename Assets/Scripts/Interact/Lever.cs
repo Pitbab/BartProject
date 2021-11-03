@@ -9,7 +9,8 @@ public class Lever : MonoBehaviour
     [SerializeField] private Light Light;
 
     //RefToGate
-    [SerializeField] private BigGate Gate;
+    //[SerializeField] private BigGate Gate;
+    [SerializeField] private PowerConsumer Obj;
 
     private bool IsActivated = false;
     private const float RotAngle = 64f;
@@ -21,7 +22,8 @@ public class Lever : MonoBehaviour
             Light.color = new Color(0, 1, 0);
             Bar.transform.localEulerAngles = new Vector3(0f, 0f, RotAngle);
             IsActivated = true;
-            Gate.CheckLevers?.Invoke();
+            //Gate.CheckLevers?.Invoke();
+            Obj.SwitchPower();
         }
 
     }

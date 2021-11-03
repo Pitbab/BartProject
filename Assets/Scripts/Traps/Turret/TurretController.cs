@@ -7,13 +7,15 @@ using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
-public class TurretController : MonoBehaviour
+public class TurretController : PowerConsumer
 {
     [SerializeField] private GameObject BarelEnd;
     [SerializeField] private GameObject TurretHead;
     [SerializeField] private GameObject Bullet;
     [SerializeField] private float MinCooldown;
     [SerializeField] private float MaxCooldown;
+    private bool Activated = true;
+    
     private BasicMovement PlayerMovement;
     private Transform PlayerPos;
     private Projectile BulletData;
@@ -34,11 +36,19 @@ public class TurretController : MonoBehaviour
 
         Player = LayerMask.GetMask("Player");
     }
+
+    public override void SwitchPower()
+    {
+        Activated = !Activated;
+    }
     
 
     private void Update()
     {
-        CheckForPlayer();
+        if (Activated)
+        {
+            CheckForPlayer();
+        }
     }
 
     private float CheckDist()
@@ -89,6 +99,18 @@ public class TurretController : MonoBehaviour
         Instantiate(Bullet, BarelEnd.transform.position, rotation);
         timeToShoot = Random.Range(MinCooldown, MaxCooldown);
         Timer = 0.0f;
+    }
+
+    public BasicMovement GetPlayerPos()
+    {
+        if (PlayerInRange())
+        {
+            return PlayerMovement;
+        }
+        else
+        {
+            return null;
+        }
     }
 }
 

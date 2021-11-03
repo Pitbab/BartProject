@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class BigGate : MonoBehaviour
+public class BigGate : PowerConsumer
 {
     [SerializeField] private List<Lever> Levers;
     [SerializeField] private List<GameObject> Bars;
-    public Action CheckLevers;
+    //public Action CheckLevers;
     [SerializeField] private AudioClip PowerDownSFX;
 
     private void Start()
     {
-        CheckLevers = CheckGate;
+        //CheckLevers = CheckGate;
+    }
+
+    public override void SwitchPower()
+    {
+        CheckGate();
     }
 
     private void CheckGate()

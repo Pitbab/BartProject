@@ -248,8 +248,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletSpeed: 30
   IsCatched: 0
-  InZone: 0
   ColorIndicator: {fileID: 2100000, guid: 157e8548719e38a46a23583a83226b7d, type: 2}
+  Explosion: {fileID: 100000, guid: f881607407b15cc46b24d6bda799037a, type: 3}
 --- !u!54 &8786429937312501621
 Rigidbody:
   m_ObjectHideFlags: 0
