@@ -254,12 +254,15 @@ public class BasicMovement : MonoBehaviour
         {
             if (CheckGround())
             {
+                AnimManager.NoSoftLanding();
+                AnimManager.StopFallingAnim();
+
                 if (lastvel < -60)
                 {
                     PlayerManager.Instance.InstantDeath();
                 }
                 
-                AnimManager.StopFallingAnim();
+
             }
         }
     }

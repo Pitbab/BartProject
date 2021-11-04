@@ -30,7 +30,8 @@ public class RestartZone : MonoBehaviour
 
     private void ResetObjectState(Collider other)
     {
-        PickableObject Object = other.gameObject.GetComponent<PickableObject>();
-        Object.ResetState();
+        //temp desactivation for presentation
+        //PickableObject Object = other.gameObject.GetComponent<PickableObject>();
+        //Object.ResetState();
     }
 }
