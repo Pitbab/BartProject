@@ -27,7 +27,7 @@ public class Telekinesis : MonoBehaviour
 
     public float CurrentMana = 100f;
     private const float ManaRegenRate = 5.0f;
-    private const float ManaUseRate = 5.0f;
+    private const float ManaUseRate = 10.0f;
     private const float BulletStopCost = 2.0f;
 
     [SerializeField] private GameObject UI;
@@ -246,6 +246,7 @@ public class Telekinesis : MonoBehaviour
                 float cost = hit.attachedRigidbody.mass * ManaUseRate;
                 DestroyWall(hit, cost);
             }
+            
         }
 
     }
@@ -286,6 +287,7 @@ public class Telekinesis : MonoBehaviour
             }
             AnimController.PlayPush();
             destructible.Shatter(Upper.transform.forward * Strength);
+            AudioManager.Instance.PlaySfx(AudioManager.Instance.BlastSFX, transform.position, 5.0f);
         }
     }
 
@@ -318,6 +320,7 @@ public class Telekinesis : MonoBehaviour
             }
             
             AnimController.PlayPush();
+            AudioManager.Instance.PlaySfx(AudioManager.Instance.BlastSFX, transform.position, 5.0f);
             
 
         }

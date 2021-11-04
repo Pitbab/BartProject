@@ -13,6 +13,7 @@ public class StamGem : MonoBehaviour
     private Color Temp;
 
     private Renderer GemRenderer;
+    [SerializeField] private AudioClip GemSFX;
 
     private const string Player = "Player";
 
@@ -49,6 +50,7 @@ public class StamGem : MonoBehaviour
         if (other.CompareTag(Player))
         {
             PlayerManager.Instance.GetStam(StamGain);
+            AudioManager.Instance.PlaySfx(GemSFX, other.transform.position, 1f);
             Destroy(gameObject);
         }
     }

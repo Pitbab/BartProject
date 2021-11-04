@@ -15,12 +15,18 @@ public class DroneController : MonoBehaviour
     private Vector3 TargetLocation = Vector3.zero;
     private Coroutine CurrentRoutine;
 
+    private AudioSource Audio;
+    
+    [Header("Sounds")] 
+    [SerializeField] private AudioClip Explosion;
+
 
     private void Start()
     {
         LastLocation = transform.position;
         TargetLocation = Locations[LocationIndex].transform.position;
         CurrentRoutine = StartCoroutine(MoveToLocation());
+        Audio = GetComponent<AudioSource>();
     }
     
 
@@ -59,6 +65,7 @@ public class DroneController : MonoBehaviour
 
     public void Destroyed()
     {
+        Audio.PlayOneShot(Explosion);
         StopCoroutine(CurrentRoutine);
     }
 }

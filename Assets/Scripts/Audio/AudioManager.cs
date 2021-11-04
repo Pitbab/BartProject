@@ -14,6 +14,8 @@ public class AudioManager : MonoBehaviour
 
      public AudioClip DeadSFX;
 
+     public AudioClip BlastSFX;
+
      private void Awake()
      {
         if(Instance == null)
@@ -31,7 +33,7 @@ public class AudioManager : MonoBehaviour
      {
           AudioSource.PlayClipAtPoint(clip, position, volume);
      }
-
+     
 
      
 }

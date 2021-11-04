@@ -61,12 +61,19 @@ public class Projectile : MonoBehaviour
                 Drone.Destroyed();
                 //Drone.enabled = false;
                 //make it drop
-                Rigidbody body = collision.gameObject.AddComponent<Rigidbody>();
-                body.useGravity = true;
-                body.mass = 100.0f;
+                if (collision.gameObject.GetComponent<Rigidbody>() == null)
+                {
+                    Rigidbody body = collision.gameObject.AddComponent<Rigidbody>();
+                    body.useGravity = true;
+                    body.mass = 100.0f;
+                }
+
+                //less radius for better detection
+                SphereCollider coll = collision.gameObject.GetComponent<SphereCollider>();
+                coll.radius = 0.1f;
 
                 //destroy the drone
-                Destroy(collision.gameObject, 2.5f);
+                //Destroy(collision.gameObject, 2.5f);
 
             }
         }

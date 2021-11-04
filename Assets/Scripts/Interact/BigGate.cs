@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class BigGate : PowerConsumer
 {
@@ -9,6 +10,7 @@ public class BigGate : PowerConsumer
     [SerializeField] private List<GameObject> Bars;
     //public Action CheckLevers;
     [SerializeField] private AudioClip PowerDownSFX;
+    [SerializeField] private Light LightState;
 
     private void Start()
     {
@@ -45,7 +47,8 @@ public class BigGate : PowerConsumer
 
     private void OpenGate()
     {
-        AudioManager.Instance.PlaySfx(PowerDownSFX, transform.position, 1f);
+        LightState.color = Color.green;
+        AudioManager.Instance.PlaySfx(PowerDownSFX, transform.position, 1000f);
         foreach(GameObject bar in Bars)
         {
             bar.SetActive(false);

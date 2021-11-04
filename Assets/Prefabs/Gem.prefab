@@ -108,6 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StamGain: 20
+  GemSFX: {fileID: 8300000, guid: a544b582490374f4cae5493651dc972a, type: 3}
 --- !u!95 &1923881167377578719
 Animator:
   serializedVersion: 3

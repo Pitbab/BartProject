@@ -6,7 +6,7 @@ public class LowGravityZone : MonoBehaviour
 {
 
     private BasicMovement PlayerMov;
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Player")

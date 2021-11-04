@@ -6,7 +6,8 @@ public class Interaction : MonoBehaviour
 {
 
     private LayerMask Interactible;
-    private const float DetectionRadius = 3.0f;
+    private const float DetectionRadius = 4.0f;
+    
     private void Start()
     {
         Interactible = LayerMask.GetMask("Interactible");
