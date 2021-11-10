@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -13,9 +15,17 @@ public class MenuController : MonoBehaviour
     [SerializeField] private AudioClip StartSound;
     [SerializeField] private AudioSource Source;
     [SerializeField] private Image Blocker;
+    
+
+    //test for highlight
+    [SerializeField] private TMP_FontAsset font1;
+    [SerializeField] private TMP_FontAsset font2;
+    [SerializeField] private Button _button;
+    
 
     private Action LoadLevel;
     private Action QuitApp;
+    
 
     private void Start()
     {
@@ -23,13 +33,13 @@ public class MenuController : MonoBehaviour
         QuitApp = QuitGame;
     }
 
-    private void PlayGame()
+    public void PlayGame()
     {
         if (PlayerPrefs.HasKey("x"))
         {
             PlayerPrefs.DeleteAll();
         }
-        SceneManager.LoadScene("Level_1");
+        SceneManager.LoadScene("Presentation");
     }
 
     private void QuitGame()
