@@ -14,7 +14,7 @@ public class BasicMovement : MonoBehaviour
 
     private float CameraRotationY;
     private float CameraRotationX;
-    private const float RotationSpeed = 3f;
+    private float RotationSpeed = 3f;
 
     private const float RunningCost = 10.0f;
     private float CurrentSpeed;
