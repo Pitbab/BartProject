@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialController : MonoBehaviour
 {
@@ -59,6 +60,13 @@ public class TutorialController : MonoBehaviour
         Player.transform.position = LastStep;
         controller.enabled = true;
 
+    }
+
+    public void GoToLevel()
+    {
+        //transition a faire
+
+        SceneManager.LoadScene("Presentation");
     }
 
 }

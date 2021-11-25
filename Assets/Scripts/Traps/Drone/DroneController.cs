@@ -65,7 +65,23 @@ public class DroneController : MonoBehaviour
 
     public void Destroyed()
     {
+        //disable the turret
+        TurretController turret = gameObject.GetComponentInChildren<TurretController>();
+        turret.enabled = false;
+        
         Audio.PlayOneShot(Explosion);
         StopCoroutine(CurrentRoutine);
+        
+        //make it drop
+        if (gameObject.GetComponent<Rigidbody>() == null)
+        {
+            Rigidbody body = gameObject.AddComponent<Rigidbody>();
+            body.useGravity = true;
+            body.mass = 100.0f;
+        }
+
+        //less radius for better detection
+        SphereCollider coll = gameObject.GetComponent<SphereCollider>();
+        coll.radius = 0.1f;
     }
 }

@@ -33,9 +33,6 @@ public class PlayerUI : MonoBehaviour
     private const float NormalTimeScale = 1.0f;
     private const float MenuTimeScale = 0.0f;
 
-    //if i make more than 2-3 power there will  be a wheel of selection and slow-mo to help the player select the power
-    //private float SelectionTimeScale = 0.2f;
-
     private void Start()
     {
 
@@ -63,29 +60,40 @@ public class PlayerUI : MonoBehaviour
     
     private void Update()
     {
+        
+        UpdateUiValues();
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            ChangeMenuState();
+        }
+
+    }
+
+    private void UpdateUiValues()
+    {
+        UpdateTimer();
+        
+        //set sliders values
         ManaSliderRight.value = Mana.CurrentMana;
         ManaSliderLeft.value = Mana.CurrentMana;
         index = Mana.ModeIndex;
-        UpdatePowerImage();
-
-        if(HealthSlider.value <= 0)
-        {
-            //SceneManager.LoadScene("dead");
-        }
-
+        
+        //use the index of powers being used in the telekinesis script
+        PowerSelected.sprite = PowerImages[index];
+        
+        //exclamation mark for incoming bullets
         Indicator.enabled = Mana.CheckForBullets();
-        UpdateTimer();
+    }
 
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            InMenu = !InMenu;
-            PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
-            ChangeCursorMode();
-            ChangeTimeScale();
-            PlayerManager.Instance.ChangeMenuState();
-        }
-        
-        
+    public void ChangeMenuState()
+    {
+        //activate menu mode or deactivate it
+        InMenu = !InMenu;
+        PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
+        ChangeCursorMode();
+        ChangeTimeScale();
+        PlayerManager.Instance.ChangeMenuState();
     }
 
     private void ChangeCursorMode()
@@ -144,12 +152,6 @@ public class PlayerUI : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             RedIndicatorMana.SetActive(false);
         }
-    }
-
-    private void UpdatePowerImage()
-    {
-        //use the index of powers being used in the telekinesis script
-        PowerSelected.sprite = PowerImages[index];
     }
 
     public void BackToMain()

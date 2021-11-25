@@ -48,32 +48,13 @@ public class Projectile : MonoBehaviour
 
         if (collision.collider.CompareTag(Drone))
         {
-            Debug.Log("Drone touched");
             if (this.IsCatched)
             {
                 //instantiate explosion
                 Instantiate(Explosion, collision.transform);
-                //disable the turret
-                TurretController turret = collision.gameObject.GetComponentInChildren<TurretController>();
-                turret.enabled = false;
                 //disable the drone
                 DroneController Drone = collision.gameObject.GetComponent<DroneController>();
                 Drone.Destroyed();
-                //Drone.enabled = false;
-                //make it drop
-                if (collision.gameObject.GetComponent<Rigidbody>() == null)
-                {
-                    Rigidbody body = collision.gameObject.AddComponent<Rigidbody>();
-                    body.useGravity = true;
-                    body.mass = 100.0f;
-                }
-
-                //less radius for better detection
-                SphereCollider coll = collision.gameObject.GetComponent<SphereCollider>();
-                coll.radius = 0.1f;
-
-                //destroy the drone
-                //Destroy(collision.gameObject, 2.5f);
 
             }
         }

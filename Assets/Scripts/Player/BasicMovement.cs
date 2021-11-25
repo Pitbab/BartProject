@@ -80,7 +80,7 @@ public class BasicMovement : MonoBehaviour
         CheatManager.ResetLevel = ResetLevel;
 #endif
         
-        //StartingPos = PlayerManager.Instance.GetCheckpointPos;
+        //temp for testing checkpoints
         if (PlayerPrefs.HasKey("x"))
         {
             StartingPos.x = PlayerPrefs.GetFloat("x");
@@ -121,14 +121,10 @@ public class BasicMovement : MonoBehaviour
             CheckForRoll();
             UpdateRotation();
             Jumping();
+            Slide();
         }
 
-        //temp code for slide
 
-        if (Input.GetKeyDown(KeyCode.LeftControl) && CheckGround())
-        {
-            AnimManager.PlaySlidingAnim();
-        }
 #if DEBUG
         CheatCollision();
 #endif
@@ -141,10 +137,8 @@ public class BasicMovement : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
+        //set the animation blend with axis values
         AnimManager.SetMovingBlend(x, z);
-
-        //CurrentSpeed = 0;
-
 
         Vector3 move = transform.right * x + transform.forward * z;
         if(!Climb.Climb() &&AnimManager.GetAnimName() != "EndOfWall")
@@ -153,9 +147,10 @@ public class BasicMovement : MonoBehaviour
             if(!CheatManager.Instance.Flying)
             {
 #endif
-                //Run faster
+                //use shift to run faster
                 if (Input.GetKey(KeyCode.LeftShift) && IsOnGround && PlayerManager.Instance.PlayerStam > 0)
                 {
+                    //speed is gain with acceleration and not instantly
                     if (CurrentSpeed < RunningSpeed)
                     {
                         CurrentSpeed += Acceleration * Time.deltaTime;
@@ -168,6 +163,7 @@ public class BasicMovement : MonoBehaviour
                     if (!CheatManager.Instance.NoRessources)
                     {
 #endif
+                        //if the player is moving and running then stamina can be depleted
                         if (x != 0 || z != 0)
                         {
                             PlayerManager.Instance.DepleteStamina(RunningCost);
@@ -185,22 +181,24 @@ public class BasicMovement : MonoBehaviour
 #if DEBUG
             }
 #endif
-            
+            //apply speed modification to the controller
             Controller.Move(move * CurrentSpeed * Time.deltaTime);
         }
-
-
+        
+        //bool set by animator in slide animation -> apply more acceleration to the player
         if(FowardBoost)
         {
             Controller.Move((transform.forward) * RunningSpeed * Time.deltaTime);
             CurrentSpeed = RunningSpeed;
         }
 
+        //bool set by animator in climb up animation -> push a little bit the player over the edge when climbing  
         if (EndOfClimb)
         {
             Controller.Move(transform.forward * ClimbOverSpeed * Time.deltaTime);
         }
         
+        //calculate the predicted vel after all speed modification
         PredictedVel = move * CurrentSpeed;
     }
 
@@ -210,6 +208,7 @@ public class BasicMovement : MonoBehaviour
         float MouseY = Input.GetAxis("Mouse Y");
         string Slide = "Slide";
 
+        //clamp the camera rotation
         CameraRotationY -= MouseY * RotationSpeed;
         CameraRotationY = Mathf.Clamp(CameraRotationY, -90.0f, 90.0f);
         CameraRotationX = Mathf.Clamp(CameraRotationX, -100, 100);
@@ -225,7 +224,6 @@ public class BasicMovement : MonoBehaviour
         {
             if (CameraRotationX != 0)
             {
-                
                 Quaternion Rotation = new Quaternion(transform.rotation.x, AimTarget.transform.rotation.y, transform.rotation.z, AimTarget.transform.rotation.w);
                 transform.rotation = Rotation;
                 CameraRotationX = 0.0f;
@@ -241,6 +239,7 @@ public class BasicMovement : MonoBehaviour
 
     private void CheckForRoll()
     {
+        //if the falling velocity pass a certain threshold the player will make a roll
         if (Velocity.y < velocityForRoll)
         {
             Debug.Log("<color=red>Falling from high, Do a Roll</color>");
@@ -250,6 +249,7 @@ public class BasicMovement : MonoBehaviour
         
         float lastvel = Velocity.y;
 
+        //if the player is falling from too high and not landing on low gravity zone then there will be damage fall 
         if (!InLowGrav)
         {
             if (CheckGround())
@@ -266,13 +266,20 @@ public class BasicMovement : MonoBehaviour
             }
         }
     }
+    
+    private void Slide()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl) && CheckGround())
+        {
+            AnimManager.PlaySlidingAnim();
+        }
+    }
 
     private void Jumping()
     {
 #if DEBUG
         if(CheatManager.Instance.Flying)
         {
-            
             ToolNoGravity();
         }
         else
@@ -287,14 +294,15 @@ public class BasicMovement : MonoBehaviour
             }
             else
             {
-                //AnimManager.NoSoftLanding();
-
+                
+                //if the player is on ground and not falling
                 if (CheckGround() && Velocity.y < 0)
                 {
                     Velocity = PredictedVel;
                     Velocity.y = GroundResetSpeed;
                 }
-
+                
+                //jump when on ground
                 if (Input.GetKeyDown("space") && CheckGround())
                 {
                     Velocity += PredictedVel / JumpDivisor;
@@ -303,8 +311,7 @@ public class BasicMovement : MonoBehaviour
                     PlayerMouth.PlayOneShot(test, 0.5f);
                 }
 
-                //jump after wallrun (to improve)
-
+                //jump after wallrun
                 if (Input.GetKeyDown(KeyCode.Space) && wallrun.OnWall && !UseJump)
                 {
                     JumpFromWall();
@@ -321,18 +328,23 @@ public class BasicMovement : MonoBehaviour
 #if DEBUG
         }
 #endif
+        //apply velocity changes to the controller
         Controller.Move(Velocity * Time.deltaTime);
     }
 
     private void JumpFromWall()
     {
+        //add velocity where the player is looking at
         Velocity = transform.forward * ForwardWallJumpSpeed;
         Velocity += new Vector3(AimTarget.transform.forward.x, 0, AimTarget.transform.forward.z) * ForwardWallJumpSpeed;
+        
+        //add a some velocity in y to make a parabola
         Velocity.y = UpwardWallJumpSpeed;
         UseJump = true;
         AnimManager.PlayjumpAnim();
     }
 
+    //when player stopped wall running but not from jumping out of it
     private void LeavingWall()
     {
         if (!UseJump)
@@ -343,6 +355,7 @@ public class BasicMovement : MonoBehaviour
 
     }
 
+    //controls player velocity when in no gravity zone
     private void NoGravity()
     {
         if (Input.GetKey(KeyCode.Space))

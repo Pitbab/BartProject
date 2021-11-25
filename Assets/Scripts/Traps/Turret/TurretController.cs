@@ -14,6 +14,8 @@ public class TurretController : PowerConsumer
     [SerializeField] private GameObject Bullet;
     [SerializeField] private float MinCooldown;
     [SerializeField] private float MaxCooldown;
+    [SerializeField] private float MaxRange;
+    
     private bool Activated = true;
     
     private BasicMovement PlayerMovement;
@@ -21,7 +23,7 @@ public class TurretController : PowerConsumer
     private Projectile BulletData;
     private float Timer = 5.0f;
 
-    private float TurretRange = 40.0f;
+    //private float TurretRange = 40.0f;
     private float RotationRate = 100.0f;
     private float timeToShoot;
 
@@ -80,11 +82,11 @@ public class TurretController : PowerConsumer
 
     private bool PlayerInRange()
     {
-        if (Physics.CheckSphere(transform.position, TurretRange, Player))
+        if (Physics.CheckSphere(transform.position, MaxRange, Player))
         {
             PlayerMovement = PlayerManager.Instance.BasicMovement;
             PlayerPos = PlayerMovement.transform;
-            if (CheckDist() < TurretRange)
+            if (CheckDist() < MaxRange)
             {
                 return true;
             }

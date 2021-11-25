@@ -6,7 +6,7 @@ public class Interaction : MonoBehaviour
 {
 
     private LayerMask Interactible;
-    private const float DetectionRadius = 4.0f;
+    private const float DetectionRadius = 2.0f;
     
     private void Start()
     {
