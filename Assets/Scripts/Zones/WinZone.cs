@@ -6,12 +6,39 @@ using UnityEngine;
 public class WinZone : MonoBehaviour
 {
     private const string Player = "Player";
+    private const float EndTimer = 1f;
+
+    [SerializeField] private AudioClip FinishedSound;
+    private AudioSource Source;
+
+    private bool IsTriggered = false;
+
+    private void Start()
+    {
+        Source = GetComponent<AudioSource>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == Player)
         {
-            PlayerManager.Instance.SavingFinalTime();
-            PlayerManager.Instance.GoToWinScreen();
+            //to be sure the ending is not triggered multiple time
+            if (!IsTriggered)
+            {
+                IsTriggered = true;
+                PlayerManager.Instance.SavingFinalTime();
+                StartCoroutine(Finished());
+            }
         }
     }
+
+    private IEnumerator Finished()
+    {
+        Source.PlayOneShot(FinishedSound);
+        yield return new WaitForSeconds(0.2f);
+        Transition.Instance.ChangeScene("Win");
+    }
+
+
+
 }

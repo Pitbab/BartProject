@@ -21,42 +21,65 @@ public class MenuController : MonoBehaviour
     [SerializeField] private TMP_FontAsset font1;
     [SerializeField] private TMP_FontAsset font2;
     [SerializeField] private Button _button;
-    
 
-    private Action LoadLevel;
-    private Action QuitApp;
     
-
+    //TO REMOVE (ONLY TO DELETE PLAYER PREFS)
     private void Start()
     {
-        LoadLevel = PlayGame;
-        QuitApp = QuitGame;
-    }
-
-    public void PlayGame()
-    {
-        if (PlayerPrefs.HasKey("x"))
-        {
-            PlayerPrefs.DeleteAll();
-        }
-        SceneManager.LoadScene("Presentation");
-    }
-
-    private void QuitGame()
-    {
-        Application.Quit();
+        //PlayerPrefs.DeleteKey("TUTORIAL");
+        //PlayerPrefs.Save();
     }
 
     public void Quit()
     {
         Source.PlayOneShot(QuitSound);
-        StartCoroutine(Transition(QuitSound.length, QuitApp));
+        StartCoroutine(QuitTransition(QuitSound.length));
     }
 
     public void StartGame()
     {
         Source.PlayOneShot(StartSound);
-        StartCoroutine(Transition(StartSound.length, LoadLevel));
+        
+        if (PlayerPrefs.HasKey("TUTORIAL"))
+        {
+            if (PlayerPrefs.GetInt("TUTORIAL") == 1)
+            {
+                Transition.Instance.ChangeScene("Presentation");
+            }
+            else
+            {
+                Transition.Instance.ChangeScene("Tutorial");
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetInt("TUTORIAL", 0);
+            PlayerPrefs.Save();
+            Transition.Instance.ChangeScene("Tutorial");
+        }
+
+        
+    }
+
+    //when player want to replay tutorial
+    public void ForcePlayTutorial()
+    {
+        Transition.Instance.ChangeScene("Tutorial");
+    }
+
+    public void ToggleSkipTutorial(Toggle toggle)
+    {
+        if (toggle.isOn)
+        {
+            PlayerPrefs.SetInt("TUTORIAL", 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("TUTORIAL", 0);
+        }
+        
+        PlayerPrefs.Save();
+
     }
 
     public void playSelectSound()
@@ -64,7 +87,7 @@ public class MenuController : MonoBehaviour
         Source.PlayOneShot(SelectSound);
     }
 
-    private IEnumerator Transition(float transitionTime, Action load)
+    private IEnumerator QuitTransition(float transitionTime)
     {
         Blocker.raycastTarget = true;
 
@@ -79,13 +102,7 @@ public class MenuController : MonoBehaviour
 
         }
         
-        load?.Invoke();
+        Application.Quit();
         
-    }
-
-    private void OnDestroy()
-    {
-        LoadLevel -= PlayGame;
-        QuitApp -= QuitGame;
     }
 }

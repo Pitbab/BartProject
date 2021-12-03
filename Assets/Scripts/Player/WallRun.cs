@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class WallRun : MonoBehaviour
 {
@@ -14,6 +10,7 @@ public class WallRun : MonoBehaviour
     private const float TiltValue = 15.0f;
     private const float TiltSpeed = 10.0f;
     private const float WallCheckDist = 2.0f;
+    private const float Gravity = -25f;
 
     private const float WallRunCost = 10.0f;
     private LayerMask Ground;
@@ -21,7 +18,6 @@ public class WallRun : MonoBehaviour
 
     //testing
     private BasicMovement basicMoving;
-    public Action LeaveWall;
 
     public GameObject CurrentWall;
     public GameObject LastWall;
@@ -48,10 +44,6 @@ public class WallRun : MonoBehaviour
         
         if (Input.GetKey(KeyCode.LeftShift) && (CheckWallLeft() || (CheckWallRight())) && !basicMoving.JumpFormWall && PlayerManager.Instance.PlayerStam > 0) //hold a or d to stick to the wall
         {
-            /*
-             lock on feature to stay on the wall when looking away to jump on another wall
-             --switch y gravity to 0 but put a timer when on wall
-             */
             IsWallRunning = true;
 
             //wallRun Gravity
@@ -59,13 +51,11 @@ public class WallRun : MonoBehaviour
 
             if (CheckWallRight())
             {
-                Debug.Log("WallRun on right");
                 ZRotation = Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, TiltValue);
             }
 
             if (CheckWallLeft())
             {
-                Debug.Log("WallRun on left");
                 ZRotation = Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, -TiltValue);
             }
 
@@ -86,14 +76,14 @@ public class WallRun : MonoBehaviour
         else
         {
 
-            if (IsWallRunning == true)
+            if (IsWallRunning)
             {
                 basicMoving.LeaveWall?.Invoke();
             }
             
             IsWallRunning = false;
             // Normal Gravity
-            basicMoving.Gravity = -25.0f;
+            basicMoving.Gravity = Gravity;
 
             //ZRotation set back
             Quaternion InitalRotation = Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, 0.0f);
@@ -104,12 +94,6 @@ public class WallRun : MonoBehaviour
 
     public bool CheckWallLeft()
     {
-        //---------------------------------------------Test-----------------------------------------------//
-        //might need a better wall detection than just one raycast
-
-        //Vector3 CheckPos = -transform.right + transform.position + new Vector3(0.5f, 0.8f, -0.1f);
-        //return (Physics.CheckSphere(CheckPos, 0.8f, RunnableWall));
-        //------------------------------------------------------------------------------------------------//
 
         Vector3 CheckPos = -transform.right + transform.position + new Vector3(0, 0.8f, +0.5f);
         Ray left = new Ray(transform.position, -transform.right);
@@ -122,17 +106,10 @@ public class WallRun : MonoBehaviour
         
         return (Physics.CheckSphere(CheckPos, 0.5f, RunnableWall));
         
-        //return(Physics.Raycast(transform.position, -transform.right, WallCheckDist, RunnableWall));
     }
 
     public bool CheckWallRight()
     {
-        //---------------------------------------------Test-----------------------------------------------//
-        //might need a better wall detection than just one raycast
-
-        //Vector3 CheckPos = transform.right + transform.position + new Vector3(0.5f, 0.8f, -0.1f);
-        //return (Physics.CheckSphere(CheckPos, 0.8f, RunnableWall));
-        //------------------------------------------------------------------------------------------------//
 
         Vector3 CheckPos = transform.right + transform.position + new Vector3(0, 0.8f, +0.5f);
         Ray right = new Ray(transform.position, transform.right);
@@ -144,7 +121,6 @@ public class WallRun : MonoBehaviour
         }
         
         return (Physics.CheckSphere(CheckPos, 0.5f, RunnableWall));
-        //return (Physics.Raycast(transform.position, transform.right, WallCheckDist, RunnableWall));
     }
 
     private bool CheckGroundWall()

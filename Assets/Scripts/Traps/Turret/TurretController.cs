@@ -15,6 +15,9 @@ public class TurretController : PowerConsumer
     [SerializeField] private float MinCooldown;
     [SerializeField] private float MaxCooldown;
     [SerializeField] private float MaxRange;
+
+    [SerializeField] private bool OnDrone = false;
+    [SerializeField] private float VisionAngle = 90;
     
     private bool Activated = true;
     
@@ -60,23 +63,40 @@ public class TurretController : PowerConsumer
 
     private void CheckForPlayer()
     {
+        bool canShoot = true;
         
         if (PlayerInRange())
         {
-            Vector3 direction = ((PlayerPos.position + (PlayerMovement.PredictedVel * (CheckDist() / BulletData.BulletSpeed))) - transform.position);
-            Quaternion rotation = Quaternion.LookRotation(direction);
-            
-            
-            TurretHead.transform.rotation = Quaternion.Slerp(TurretHead.transform.rotation, rotation, Time.deltaTime * RotationRate);
+            if (!OnDrone)
+            {
+                Vector3 angle = PlayerPos.position - transform.position;
 
-            if (Timer >= timeToShoot)
-            {
-                Shoot(rotation);
+                //if player is in vision angle
+                if (!(Vector3.Angle(transform.forward, angle) <= VisionAngle))
+                {
+                    canShoot = false;
+                }
+                
             }
-            else
+
+            if (canShoot)
             {
-                Timer += Time.deltaTime;
+                Vector3 direction = ((PlayerPos.position + (PlayerMovement.PredictedVel * (CheckDist() / BulletData.BulletSpeed))) - transform.position);
+                Quaternion rotation = Quaternion.LookRotation(direction);
+            
+            
+                TurretHead.transform.rotation = Quaternion.Slerp(TurretHead.transform.rotation, rotation, Time.deltaTime * RotationRate);
+
+                if (Timer >= timeToShoot)
+                {
+                    Shoot(rotation);
+                }
+                else
+                {
+                    Timer += Time.deltaTime;
+                }
             }
+
         }
     }
 

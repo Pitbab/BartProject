@@ -13,7 +13,7 @@ public class Telekinesis : MonoBehaviour
     private const float MaxMana = 100.0f;
     private const float MaxRange = 30.0f;
     private const float Strength = 30.0f;
-    private const float ObjectHoldingSpeed = 15.0f;
+    private const float ObjectHoldingSpeed = 8.0f;
 
     private Ray TelekinesisRange;
 
@@ -42,6 +42,8 @@ public class Telekinesis : MonoBehaviour
     //test outline
     private GameObject Targeted;
     private Outline Indicator;
+
+    private bool InSlowMo = false;
 
 
     private void Start()
@@ -78,6 +80,31 @@ public class Telekinesis : MonoBehaviour
             RegenMana();
         }
 
+        UpdateSlowMo();
+
+    }
+
+    private void UpdateSlowMo()
+    {
+        if(CheckForBullets())
+        {
+            if (!InSlowMo)
+            {
+                AudioManager.Instance.PlaySfx(AudioManager.Instance.InSlowMo, transform.position, 1f);
+            }
+            
+            InSlowMo = true;
+            Time.timeScale = 0.2f;
+        }
+        else
+        {
+            if (InSlowMo)
+            {
+                AudioManager.Instance.PlaySfx(AudioManager.Instance.OutSlowMo, transform.position, 1f);
+            }
+            InSlowMo = false;
+            Time.timeScale = 1f;
+        }
     }
 
     private void UpdateOutline()
@@ -86,15 +113,26 @@ public class Telekinesis : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(TelekinesisRange, out hit, MaxRange, Pickable))
         {
-            Targeted = hit.transform.gameObject;
-            Indicator = Targeted.GetComponent<Outline>();
-            Indicator.enabled = true;
+            if (Targeted == null)
+            {
+                Targeted = hit.transform.gameObject;
+                Indicator = Targeted.GetComponent<Outline>();
+                Indicator.enabled = true;
+            }
+            else if (hit.transform.gameObject != Targeted)
+            {
+                Indicator.enabled = false;
+                Targeted = hit.transform.gameObject;
+                Indicator = Targeted.GetComponent<Outline>();
+                Indicator.enabled = true;
+            }
         }
         else
         {
             if (Indicator != null)
             {
                 Indicator.enabled = false;
+                Targeted = null;
             }
         }
     }
@@ -195,7 +233,8 @@ public class Telekinesis : MonoBehaviour
             HoldingPlace.localPosition = pos;
 
             //Move object to the holding position
-            ObjectInUse.MovePosition(Vector3.Lerp(ObjectInUse.position, HoldingPlace.transform.position, Time.deltaTime * ObjectHoldingSpeed));
+            ObjectInUse.gameObject.transform.position = Vector3.Lerp(ObjectInUse.position, HoldingPlace.transform.position + transform.forward * 3f, Time.deltaTime * ObjectHoldingSpeed);
+            //ObjectInUse.MovePosition(Vector3.Lerp(ObjectInUse.position, HoldingPlace.transform.position, Time.deltaTime * ObjectHoldingSpeed));
 
             //let the object hold in the air and jump on them
             if (Input.GetKeyDown(KeyCode.Mouse1))

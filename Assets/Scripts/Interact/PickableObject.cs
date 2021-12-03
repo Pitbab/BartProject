@@ -12,7 +12,6 @@ public class PickableObject : MonoBehaviour
     {
         StartPos = transform.position;
         Body = GetComponent<Rigidbody>();
-        TutorialController.Instance.AddObject(this);
     }
 
     public void ResetState()

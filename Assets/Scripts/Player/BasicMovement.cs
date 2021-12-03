@@ -35,6 +35,9 @@ public class BasicMovement : MonoBehaviour
     private bool IsTrapped = false;
 
     public Vector3 CurrentPos => transform.position; 
+    
+    private const string HOR = "Horizontal";
+    private const string VER = "Vertical";
 
 
     //jump
@@ -66,38 +69,35 @@ public class BasicMovement : MonoBehaviour
 
     //for tools
     private const float CheatSpeed = 20.0f;
+
+
         
     //Temporary testing for audio --------------------------------------------------//
     [SerializeField] private AudioSource PlayerMouth;
     [SerializeField] private AudioClip test;
     public List<AudioClip> StepSFX = new List<AudioClip>();
-    
 
+    private PlayerUI UI;
+    
+    
 
     void Start()
     {
 #if DEBUG
         CheatManager.ResetLevel = ResetLevel;
 #endif
-        
-        //temp for testing checkpoints
-        if (PlayerPrefs.HasKey("x"))
-        {
-            StartingPos.x = PlayerPrefs.GetFloat("x");
-            StartingPos.y = PlayerPrefs.GetFloat("y");
-            StartingPos.z = PlayerPrefs.GetFloat("z");
-        }
-        else
-        {
-            StartingPos = new Vector3(0, 0, -9);
-        }
-
-        transform.position = StartingPos;
         LeaveWall = LeavingWall;
 
         PlayerManager.Instance.RegisterMoving(this);
 
         Controller = GetComponent<CharacterController>();
+        
+        StartingPos = new Vector3(0, 0, -9);
+
+        Controller.enabled = false;
+        transform.position = StartingPos;
+        Controller.enabled = true;
+        
         AnimManager = GetComponent<AnimationController>();
         wallrun = GetComponent<WallRun>();
         Climb = GetComponent<Climbing>();
@@ -109,21 +109,25 @@ public class BasicMovement : MonoBehaviour
 
         AllLayer = Ground | Pickable | Car;
 
+        UI = GameObject.Find("UI").GetComponent<PlayerUI>();
+
+
+
     }
 
 
     void Update()
     {
         //if player is not trapped or in menu
-        if(!IsTrapped && PlayerManager.Instance.GetMenuState == false)
+        if(PlayerManager.Instance.GetMenuState == false)
         {
             Move();
             CheckForRoll();
             UpdateRotation();
             Jumping();
             Slide();
+            CheckGround();
         }
-
 
 #if DEBUG
         CheatCollision();
@@ -134,8 +138,8 @@ public class BasicMovement : MonoBehaviour
 
     private void Move()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        float x = Input.GetAxis(HOR);
+        float z = Input.GetAxis(VER);
 
         //set the animation blend with axis values
         AnimManager.SetMovingBlend(x, z);
@@ -148,30 +152,38 @@ public class BasicMovement : MonoBehaviour
             {
 #endif
                 //use shift to run faster
-                if (Input.GetKey(KeyCode.LeftShift) && IsOnGround && PlayerManager.Instance.PlayerStam > 0)
+                if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    //speed is gain with acceleration and not instantly
-                    if (CurrentSpeed < RunningSpeed)
+                    if (PlayerManager.Instance.PlayerStam > 0)
                     {
-                        CurrentSpeed += Acceleration * Time.deltaTime;
-                    }
-                    else
-                    {
-                        CurrentSpeed = RunningSpeed;
-                    }
-#if DEBUG
-                    if (!CheatManager.Instance.NoRessources)
-                    {
-#endif
-                        //if the player is moving and running then stamina can be depleted
-                        if (x != 0 || z != 0)
+                        if (IsOnGround)
                         {
-                            PlayerManager.Instance.DepleteStamina(RunningCost);
-                            IsRunning = true;
-                        }
+                            //speed is gain with acceleration and not instantly
+                            if (CurrentSpeed < RunningSpeed)
+                            {
+                                CurrentSpeed += Acceleration * Time.deltaTime;
+                            }
+                            else
+                            {
+                                CurrentSpeed = RunningSpeed;
+                            }
 #if DEBUG
-                    }
+                            if (!CheatManager.Instance.NoRessources)
+                            {
 #endif
+                                //if the player is moving and running then stamina can be depleted
+                                if (x != 0 || z != 0)
+                                {
+                                    PlayerManager.Instance.DepleteStamina(RunningCost);
+                                    IsRunning = true;
+                                }
+#if DEBUG
+                            }
+#endif
+                        }
+
+                    }
+
                 }
                 else
                 {
@@ -181,6 +193,13 @@ public class BasicMovement : MonoBehaviour
 #if DEBUG
             }
 #endif
+
+            //help the player control direction when in the air (if the speed is too low the player can change control efficiently)
+            if (!IsOnGround)
+            {
+                CurrentSpeed = RunningSpeed;
+            }
+            
             //apply speed modification to the controller
             Controller.Move(move * CurrentSpeed * Time.deltaTime);
         }
@@ -252,7 +271,7 @@ public class BasicMovement : MonoBehaviour
         //if the player is falling from too high and not landing on low gravity zone then there will be damage fall 
         if (!InLowGrav)
         {
-            if (CheckGround())
+            if (IsOnGround)
             {
                 AnimManager.NoSoftLanding();
                 AnimManager.StopFallingAnim();
@@ -269,7 +288,7 @@ public class BasicMovement : MonoBehaviour
     
     private void Slide()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl) && CheckGround())
+        if (Input.GetKeyDown(KeyCode.LeftControl) && IsOnGround)
         {
             AnimManager.PlaySlidingAnim();
         }
@@ -296,16 +315,16 @@ public class BasicMovement : MonoBehaviour
             {
                 
                 //if the player is on ground and not falling
-                if (CheckGround() && Velocity.y < 0)
+                if (IsOnGround && Velocity.y < 0)
                 {
                     Velocity = PredictedVel;
                     Velocity.y = GroundResetSpeed;
                 }
                 
                 //jump when on ground
-                if (Input.GetKeyDown("space") && CheckGround())
+                if (Input.GetKeyDown(KeyCode.Space) && IsOnGround)
                 {
-                    Velocity += PredictedVel / JumpDivisor;
+                    //Velocity += PredictedVel / JumpDivisor;
                     Velocity.y = Mathf.Sqrt(JumpYSpeed * Gravity);
                     AnimManager.PlayjumpAnim();
                     PlayerMouth.PlayOneShot(test, 0.5f);

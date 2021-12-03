@@ -33,9 +33,15 @@ public class PlayerUI : MonoBehaviour
     private const float NormalTimeScale = 1.0f;
     private const float MenuTimeScale = 0.0f;
 
+    [SerializeField] private AudioClip SelectSound;
+    [SerializeField] private AudioClip OpenMenuSound;
+    [SerializeField] private AudioClip CloseMenuSound;
+    private AudioSource SoundsSource;
+    
+    
     private void Start()
     {
-
+        SoundsSource = GetComponent<AudioSource>();
         PlayerManager.Instance.RegisterPlayerUi(this);
         PowerSelected = SelectedPower.GetComponent<Image>();
         Mana = Player.GetComponent<Telekinesis>();
@@ -93,7 +99,21 @@ public class PlayerUI : MonoBehaviour
         PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
         ChangeCursorMode();
         ChangeTimeScale();
+        PlayMenuSounds();
+        
         PlayerManager.Instance.ChangeMenuState();
+    }
+
+    private void PlayMenuSounds()
+    {
+        if (InMenu)
+        {
+            SoundsSource.PlayOneShot(OpenMenuSound);
+        }
+        else
+        {
+            SoundsSource.PlayOneShot(CloseMenuSound);
+        }
     }
 
     private void ChangeCursorMode()
@@ -158,7 +178,7 @@ public class PlayerUI : MonoBehaviour
     {
         Time.timeScale = NormalTimeScale;
         PlayerManager.Instance.ChangeMenuState();
-        SceneManager.LoadScene("MainMenu 1");
+        Transition.Instance.ChangeScene("MainMenu 1");
     }
 
     public void QuitGame()
@@ -170,6 +190,22 @@ public class PlayerUI : MonoBehaviour
     {
         string result =  $"{TimerMin.text} : {TimerSec.text} : {TimerFrac.text}";
         return result;
+    }
+
+    public void PlaySelectSound()
+    {
+        SoundsSource.PlayOneShot(SelectSound);
+    }
+
+    public void OnDestroy()
+    {
+        PlayerManager.Instance.OnStaminaChanged -= OnStaminaChanged;
+        PlayerManager.Instance.OnHealthChanged -= OnHealthChanged;
+    }
+
+    public void DepleteStam()
+    {
+        StaminaSlider.value -= 10f * Time.deltaTime;
     }
 
 }

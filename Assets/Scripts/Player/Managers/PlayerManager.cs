@@ -41,6 +41,8 @@ public class PlayerManager : MonoBehaviour
     private string FinalTime;
 
     private List<Coroutine> delays = new List<Coroutine>();
+
+    private Coroutine Delay;
     
 
     public float PlayerStam
@@ -242,17 +244,19 @@ public class PlayerManager : MonoBehaviour
     private void RegenStam()
     {
         //keep delays in list to not use StopAllCoroutine
-        if(!wallRun.OnWall && !basicMov.Running && !climbing.Climb())
+        if (!basicMov.Running)
         {
-            Coroutine delay = StartCoroutine(RegenDelay());
-            delays.Add(delay);
-            OnStaminaChanged?.Invoke(Stamina);
-        }
-        else
-        {
-            foreach (var routine in delays)
+            if(!wallRun.OnWall)
             {
-                StopCoroutine(routine);
+                if (!climbing.Climb())
+                {
+                    if (Stamina < MaxStamina)
+                    {
+                        Stamina += RegenRate * Time.deltaTime;
+                        OnStaminaChanged?.Invoke(Stamina);
+                    }
+
+                }
             }
         }
     }
@@ -266,11 +270,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void GoToWinScreen()
-    {
-        SceneManager.LoadScene("Win");
-    }
-
     private void GoToDeadScreen()
     {
         SceneManager.LoadScene("dead");
@@ -279,6 +278,18 @@ public class PlayerManager : MonoBehaviour
     public void ChangeMenuState()
     {
         InPauseMenu = !InPauseMenu;
+    }
+
+    public void SkipTutorial()
+    {
+        if (PlayerPrefs.HasKey("TUTORIAL"))
+        {
+            PlayerPrefs.SetInt("TUTORIAL", 1);
+            PlayerPrefs.Save();
+        }
+        
+        ChangeMenuState();
+        Transition.Instance.ChangeScene("Presentation");
     }
 
     public void SavingFinalTime()

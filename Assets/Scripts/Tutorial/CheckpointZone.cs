@@ -10,15 +10,8 @@ public class CheckpointZone : MonoBehaviour
     {
         if (other.CompareTag(Player))
         {
-            if (gameObject.name != "Last")
-            {
-                TutorialController.Instance.ChangeLastStep(this.transform.position);
-            }
-            else
-            {
-                TutorialController.Instance.GoToLevel();
-            }
-
+            GameObject.Find("LevelController").GetComponent<LevelController>().ChangeLastStep(this.transform.position);
+            //TutorialController.Instance.ChangeLastStep(this.transform.position);
         }
     }
 }

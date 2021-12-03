@@ -25,13 +25,14 @@ public class RestartZone : MonoBehaviour
     private void ResetPlayer(Collider other)
     {
         CharacterController controller = other.gameObject.GetComponent<CharacterController>();
-        TutorialController.Instance.PlayerRestart(controller);
+        GameObject.Find("LevelController").GetComponent<LevelController>().PlayerRestart(controller);
+        //TutorialController.Instance.PlayerRestart(controller);
     }
 
     private void ResetObjectState(Collider other)
     {
-        //temp desactivation for presentation
-        //PickableObject Object = other.gameObject.GetComponent<PickableObject>();
-        //Object.ResetState();
+        PickableObject Object = other.gameObject.GetComponent<PickableObject>();
+        Object.ResetState();
+        
     }
 }

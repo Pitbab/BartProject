@@ -16,6 +16,9 @@ public class AudioManager : MonoBehaviour
 
      public AudioClip BlastSFX;
 
+     public AudioClip InSlowMo;
+     public AudioClip OutSlowMo;
+
      private void Awake()
      {
         if(Instance == null)
