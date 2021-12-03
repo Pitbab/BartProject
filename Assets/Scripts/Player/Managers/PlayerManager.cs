@@ -43,6 +43,8 @@ public class PlayerManager : MonoBehaviour
     private List<Coroutine> delays = new List<Coroutine>();
 
     private Coroutine Delay;
+
+    public bool ChangingScene;
     
 
     public float PlayerStam
@@ -211,7 +213,15 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            GoToDeadScreen();
+
+            if (!ChangingScene)
+            {
+                Time.timeScale = 1.0f;
+                ChangingScene = true;
+                ChangeMenuState();
+                GoToDeadScreen();
+
+            }
         }
     }
 
@@ -224,7 +234,14 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            GoToDeadScreen();
+
+            if (!ChangingScene)
+            {
+                Time.timeScale = 1.0f;
+                ChangingScene = true;
+                ChangeMenuState();
+                GoToDeadScreen();
+            }
         }
     }
 
@@ -272,7 +289,7 @@ public class PlayerManager : MonoBehaviour
 
     private void GoToDeadScreen()
     {
-        SceneManager.LoadScene("dead");
+        Transition.Instance.ChangeScene("dead");
     }
 
     public void ChangeMenuState()
@@ -282,14 +299,22 @@ public class PlayerManager : MonoBehaviour
 
     public void SkipTutorial()
     {
+        
         if (PlayerPrefs.HasKey("TUTORIAL"))
         {
             PlayerPrefs.SetInt("TUTORIAL", 1);
-            PlayerPrefs.Save();
+
         }
+        else
+        {
+            PlayerPrefs.SetInt("TUTORIAL", 1);
+        }
+        
+        PlayerPrefs.Save();
         
         ChangeMenuState();
         Transition.Instance.ChangeScene("Presentation");
+
     }
 
     public void SavingFinalTime()

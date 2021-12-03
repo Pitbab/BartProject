@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,18 @@ public class LevelController : MonoBehaviour
     private Vector3 PlayerPos;
 
     [SerializeField] private Vector3 LastStep;
-    
+
+    private void Start()
+    {
+        if (PlayerManager.Instance.GetMenuState)
+        {
+            PlayerManager.Instance.ChangeMenuState();
+        }
+
+        PlayerManager.Instance.ChangingScene = false;
+        PlayerManager.Instance.RestartValue();
+    }
+
     public void ChangeLastStep(Vector3 Step)
     {
         LastStep = Step;
@@ -30,6 +42,26 @@ public class LevelController : MonoBehaviour
         Anims.SoftLanding();
 
         PlayerManager.Instance.GetStam(PlayerManager.Instance.GetMaxStam);
+
+    }
+    
+    public void SkipTutorial()
+    {
+        
+        if (PlayerPrefs.HasKey("TUTORIAL"))
+        {
+            PlayerPrefs.SetInt("TUTORIAL", 1);
+
+        }
+        else
+        {
+            PlayerPrefs.SetInt("TUTORIAL", 1);
+        }
+        
+        PlayerPrefs.Save();
+        
+        PlayerManager.Instance.ChangeMenuState();
+        Transition.Instance.ChangeScene("Presentation");
 
     }
 }

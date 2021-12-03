@@ -60,27 +60,35 @@ public class Telekinesis : MonoBehaviour
         TelekinesisRange = new Ray(Upper.transform.position, Upper.transform.forward * MaxRange);
 
         UpdateOutline();
-        UpdateModeIndex();
 
-        if(ModeIndex == 0)
+        if (PlayerManager.Instance.PlayerHealth >= 0)
         {
-            ObjectSelection();
-        }
-
-        if(ModeIndex == 1)
-        {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && ObjectInUse == null)
+            if(ModeIndex == 0)
             {
-                Push();
+                ObjectSelection();
+            }
+
+            if(ModeIndex == 1)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0) && ObjectInUse == null)
+                {
+                    Push();
+                }
+            }
+
+            if(ObjectInUse == null)
+            {
+                RegenMana();
+            }
+
+            if (!PlayerManager.Instance.GetMenuState)
+            {
+                UpdateSlowMo();
             }
         }
+        
+        UpdateModeIndex();
 
-        if(ObjectInUse == null)
-        {
-            RegenMana();
-        }
-
-        UpdateSlowMo();
 
     }
 
@@ -103,7 +111,7 @@ public class Telekinesis : MonoBehaviour
                 AudioManager.Instance.PlaySfx(AudioManager.Instance.OutSlowMo, transform.position, 1f);
             }
             InSlowMo = false;
-            Time.timeScale = 1f;
+            Time.timeScale = 1.0f;
         }
     }
 

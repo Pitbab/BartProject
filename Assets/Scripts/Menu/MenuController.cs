@@ -17,18 +17,11 @@ public class MenuController : MonoBehaviour
     [SerializeField] private Image Blocker;
     
 
-    //test for highlight
+    //for highlight
     [SerializeField] private TMP_FontAsset font1;
     [SerializeField] private TMP_FontAsset font2;
     [SerializeField] private Button _button;
-
     
-    //TO REMOVE (ONLY TO DELETE PLAYER PREFS)
-    private void Start()
-    {
-        //PlayerPrefs.DeleteKey("TUTORIAL");
-        //PlayerPrefs.Save();
-    }
 
     public void Quit()
     {
@@ -38,11 +31,31 @@ public class MenuController : MonoBehaviour
 
     public void StartGame()
     {
-        Source.PlayOneShot(StartSound);
-        
+        int state = 0;
+
         if (PlayerPrefs.HasKey("TUTORIAL"))
         {
-            if (PlayerPrefs.GetInt("TUTORIAL") == 1)
+            state = PlayerPrefs.GetInt("TUTORIAL");
+        }
+        
+        Source.PlayOneShot(StartSound);
+
+        if (state == 1)
+        {
+            Transition.Instance.ChangeScene("presentation");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("TUTORIAL", 0);
+            PlayerPrefs.Save();
+            Transition.Instance.ChangeScene("Tutorial");
+        }
+        
+        
+        /*
+         *        if (PlayerPrefs.HasKey("TUTORIAL"))
+        {
+            if(PlayerPrefs.GetInt("TUTORIAL") == 1)
             {
                 Transition.Instance.ChangeScene("Presentation");
             }
@@ -57,8 +70,11 @@ public class MenuController : MonoBehaviour
             PlayerPrefs.Save();
             Transition.Instance.ChangeScene("Tutorial");
         }
+         * 
+         */
 
-        
+
+
     }
 
     //when player want to replay tutorial
@@ -69,7 +85,8 @@ public class MenuController : MonoBehaviour
 
     public void ToggleSkipTutorial(Toggle toggle)
     {
-        if (toggle.isOn)
+        /*
+         *        if (toggle.isOn)
         {
             PlayerPrefs.SetInt("TUTORIAL", 1);
         }
@@ -79,6 +96,9 @@ public class MenuController : MonoBehaviour
         }
         
         PlayerPrefs.Save();
+         * 
+         */
+
 
     }
 

@@ -32,8 +32,13 @@ public class WinUI : MonoBehaviour
         }
         else
         {
-            PlayerPrefs.SetString($"{prevScene}", finalTime);
+            PlayerPrefs.SetString($"PB_{prevScene}", finalTime);
             BestTime.text = finalTime;
+        }
+
+        if (prevScene == "Tutorial")
+        {
+            PlayerPrefs.SetInt("TUTORIAL", 1);
         }
         
         PlayerPrefs.Save();

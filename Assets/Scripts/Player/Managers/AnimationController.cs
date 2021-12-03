@@ -163,6 +163,12 @@ public class AnimationController : MonoBehaviour
         audio.PlayStep(transform.position, 0.5f);
     }
 
+    public void ClimbSound()
+    {
+        PlayerAudioCollection audio = GetComponent<PlayerAudioCollection>();
+        audio.PlayClimb(transform.position, 0.5f);
+    }
+
 
 
 }

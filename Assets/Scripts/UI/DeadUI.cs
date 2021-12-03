@@ -1,26 +1,33 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class DeadUI : MonoBehaviour
 {
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene("Level_1");
-            PlayerManager.Instance.RestartValue();
-        }
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Application.Quit();
-        }
+    [SerializeField] private AudioClip SelectSound;
+
+    private AudioSource Source;
+
+    private void Start()
+    {
         
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            SceneManager.LoadScene("MainMenu 1");
-        }
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        Source = GetComponent<AudioSource>();
+    }
+
+    public void TryAgain()
+    {
+        Source.PlayOneShot(SelectSound);
+        Transition.Instance.ChangeScene("Presentation");
+    }
+
+    public void BackToMain()
+    {
+        Source.PlayOneShot(SelectSound);
+        Transition.Instance.ChangeScene("MainMenu 1");
     }
 }

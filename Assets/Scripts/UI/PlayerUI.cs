@@ -66,7 +66,6 @@ public class PlayerUI : MonoBehaviour
     
     private void Update()
     {
-        
         UpdateUiValues();
 
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -106,7 +105,7 @@ public class PlayerUI : MonoBehaviour
 
     private void PlayMenuSounds()
     {
-        if (InMenu)
+        if(InMenu)
         {
             SoundsSource.PlayOneShot(OpenMenuSound);
         }
@@ -132,7 +131,7 @@ public class PlayerUI : MonoBehaviour
 
     private void ChangeTimeScale()
     {
-        if (Time.timeScale == NormalTimeScale)
+        if(Time.timeScale > MenuTimeScale)
         {
             Time.timeScale = MenuTimeScale;
         }

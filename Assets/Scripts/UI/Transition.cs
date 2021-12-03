@@ -30,11 +30,11 @@ public class Transition : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-
     }
     
     public void ChangeScene(string sceneName, Action onSceneChange = null)
     {
+        PreviousScene = SceneManager.GetActiveScene().name;
         _loadSceneOperation = SceneManager.LoadSceneAsync(sceneName);
         _loadSceneOperation.allowSceneActivation = false;
 
@@ -47,7 +47,7 @@ public class Transition : MonoBehaviour
             onSceneChange += AllowSceneChange; 
         }
 
-        PreviousScene = sceneName;
+
         StartCoroutine(FadeRoutine(onSceneChange));
     }
 

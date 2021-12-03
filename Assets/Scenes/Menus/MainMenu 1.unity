@@ -780,9 +780,9 @@ RectTransform:
   m_Father: {fileID: 1233371725}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 483.00003, y: -403}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 483.00003, y: 99}
   m_SizeDelta: {x: 294, y: 108}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &118638853
@@ -10636,6 +10636,7 @@ MonoBehaviour:
   Blocker: {fileID: 1450300677}
   ExtraWaitingTime: 3
   LoadingSymbol: {fileID: 334883281}
+  PreviousScene: 
 --- !u!223 &870783656
 Canvas:
   m_ObjectHideFlags: 0
