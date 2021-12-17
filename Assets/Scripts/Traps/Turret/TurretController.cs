@@ -84,10 +84,16 @@ public class TurretController : PowerConsumer
                 Vector3 direction = ((PlayerPos.position + (PlayerMovement.PredictedVel * (CheckDist() / BulletData.BulletSpeed))) - transform.position);
                 Quaternion rotation = Quaternion.LookRotation(direction);
 
-                Vector3 correction = new Vector3(direction.x, 0, direction.z);
-                TurretHead.transform.right = -correction;
+                if (OnDrone)
+                {
+                    TurretHead.transform.rotation = Quaternion.Slerp(TurretHead.transform.rotation, rotation, Time.deltaTime * RotationRate);
+                }
+                else
+                {
+                    Vector3 correction = new Vector3(direction.x, 0, direction.z);
+                    TurretHead.transform.right = -correction;
+                }
                 
-                //TurretHead.transform.rotation = Quaternion.Slerp(TurretHead.transform.rotation, rotation, Time.deltaTime * RotationRate);
 
                 if (Timer >= timeToShoot)
                 {
